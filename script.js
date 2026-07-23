@@ -1,797 +1,958 @@
-// ===============================
-// MODAL FUNCTIONS
-// ===============================
+let user = {
+    name: "",
+    role: "",
+    skills: []
+};
 
-const modal =
-    document.getElementById("modal");
+let currentType = "";
+let currentQuestion = 0;
+let score = 0;
+let totalSolved = 0;
 
-const modalTitle =
-    document.getElementById("modal-title");
-
-const modalContent =
-    document.getElementById("modal-content");
-
-
-function openModal(title, content) {
-
-    modalTitle.innerText = title;
-
-    modalContent.innerHTML = content;
-
-    modal.style.display = "flex";
-
-}
-
-
-function closeModal() {
-
-    modal.style.display = "none";
-
-}
-
-
-window.onclick = function(event) {
-
-    if (event.target === modal) {
-
-        closeModal();
-
-    }
-
+let progress = {
+    aptitude: 0,
+    technical: 0,
+    coding: 0,
+    interview: 0
 };
 
 
-// ===============================
-// AI AGENT
-// ===============================
+// ==============================
+// QUESTIONS
+// ==============================
 
-function openAgent() {
+const aptitudeQuestions = [
 
-    openModal(
+{
+    question: "What is 20% of 150?",
+    options: ["20", "30", "40", "50"],
+    answer: 1
+},
 
-        "🤖 Ask CareerPilot AI",
+{
+    question: "If 5 pens cost ₹50, what is the cost of 1 pen?",
+    options: ["₹5", "₹10", "₹15", "₹20"],
+    answer: 1
+},
 
-        `
+{
+    question: "What is the average of 10, 20 and 30?",
+    options: ["15", "20", "25", "30"],
+    answer: 1
+},
 
-        <p>
+{
+    question: "A number increased by 20% and decreased by 20%. What is the final change?",
+    options: ["No change", "4% increase", "4% decrease", "2% decrease"],
+    answer: 2
+},
 
-        Hi Sindhu! I analyzed your current preparation.
-        What would you like to know?
+{
+    question: "What is the next number? 2, 4, 8, 16, ?",
+    options: ["20", "24", "32", "36"],
+    answer: 2
+},
 
-        </p>
+{
+    question: "If a train travels 60 km in 2 hours, what is its speed?",
+    options: ["20 km/h", "30 km/h", "40 km/h", "60 km/h"],
+    answer: 1
+},
 
+{
+    question: "What is 25% of 200?",
+    options: ["25", "40", "50", "75"],
+    answer: 2
+},
 
-        <br>
+{
+    question: "Find the odd one: Apple, Mango, Carrot, Banana",
+    options: ["Apple", "Mango", "Carrot", "Banana"],
+    answer: 2
+},
 
+{
+    question: "What is 12 × 8?",
+    options: ["86", "96", "108", "112"],
+    answer: 1
+},
 
-        <div class="question">
+{
+    question: "If today is Monday, what day will it be after 3 days?",
+    options: ["Tuesday", "Wednesday", "Thursday", "Friday"],
+    answer: 2
+}
 
-
-            <h3>
-                Select an option
-            </h3>
-
-
-            <button class="option"
-                onclick="agentReply('focus')">
-
-                🎯 What should I focus on today?
-
-            </button>
-
-
-            <button class="option"
-                onclick="agentReply('skill')">
-
-                📊 Analyze my skill gap
-
-            </button>
-
-
-            <button class="option"
-                onclick="agentReply('plan')">
-
-                🗺️ Create my preparation plan
-
-            </button>
+];
 
 
-            <div id="agent-reply">
+const technicalQuestions = [
+
+{
+    question: "Which keyword is used to define a function in Python?",
+    options: ["function", "def", "fun", "define"],
+    answer: 1
+},
+
+{
+    question: "Which data type is ordered and changeable in Python?",
+    options: ["Tuple", "Set", "List", "String"],
+    answer: 2
+},
+
+{
+    question: "What does SQL stand for?",
+    options: [
+        "Structured Query Language",
+        "Simple Query Language",
+        "System Query Language",
+        "Standard Question Language"
+    ],
+    answer: 0
+},
+
+{
+    question: "Which SQL command is used to retrieve data?",
+    options: ["GET", "SELECT", "FETCH", "SHOW"],
+    answer: 1
+},
+
+{
+    question: "Which symbol is used for comments in Python?",
+    options: ["//", "#", "/*", "--"],
+    answer: 1
+},
+
+{
+    question: "Which HTML tag is used to create a paragraph?",
+    options: ["<p>", "<para>", "<text>", "<paragraph>"],
+    answer: 0
+},
+
+{
+    question: "Which CSS property changes text color?",
+    options: ["font-color", "text-color", "color", "text-style"],
+    answer: 2
+},
+
+{
+    question: "What is the full form of OOP?",
+    options: [
+        "Object Oriented Programming",
+        "Object Operating Program",
+        "Open Object Programming",
+        "Object Ordered Programming"
+    ],
+    answer: 0
+},
+
+{
+    question: "Which data structure follows FIFO?",
+    options: ["Stack", "Queue", "Tree", "Graph"],
+    answer: 1
+},
+
+{
+    question: "Which SQL command removes all rows from a table?",
+    options: ["DELETE", "DROP", "TRUNCATE", "REMOVE"],
+    answer: 2
+}
+
+];
+
+
+const codingQuestions = [
+
+"Write a Python program to check whether a number is even or odd.",
+
+"Write a Python program to find the largest of two numbers.",
+
+"Write a Python program to reverse a string.",
+
+"Write a Python program to check whether a number is prime.",
+
+"Write a Python program to find the factorial of a number.",
+
+"Write a Python program to find the sum of numbers in a list.",
+
+"Write a Python program to count vowels in a string.",
+
+"Write a Python program to check whether a string is a palindrome.",
+
+"Write a Python program to find the largest number in a list.",
+
+"Write a Python program to print the Fibonacci series."
+
+];
+
+
+const interviewQuestions = [
+
+"Tell me about yourself.",
+
+"What are your strengths?",
+
+"What is your weakness?",
+
+"Why should we hire you?",
+
+"Why do you want to join our company?",
+
+"Where do you see yourself in five years?",
+
+"Explain your final year project.",
+
+"Why did you choose your technical field?",
+
+"Tell me about a challenge you faced.",
+
+"Do you have any questions for us?"
+
+];
+
+
+// ==============================
+// SETUP
+// ==============================
+
+document
+    .getElementById("setupForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        user.name =
+            document.getElementById("userName").value;
+
+        user.role =
+            document.getElementById("targetRole").value;
+
+        user.skills =
+            [...document.querySelectorAll(
+                ".skills input:checked"
+            )].map(input => input.value);
+
+        localStorage.setItem(
+            "placementUser",
+            JSON.stringify(user)
+        );
+
+        document
+            .getElementById("setupScreen")
+            .classList.add("hidden");
+
+        document
+            .getElementById("app")
+            .classList.remove("hidden");
+
+        loadDashboard();
+
+    });
+
+
+// ==============================
+// LOAD DASHBOARD
+// ==============================
+
+function loadDashboard() {
+
+    document
+        .getElementById("welcomeText")
+        .innerText =
+        `Good morning, ${user.name} 👋`;
+
+    document
+        .getElementById("profileName")
+        .innerText =
+        user.name;
+
+    document
+        .getElementById("role")
+        .innerText =
+        user.role;
+
+    document
+        .getElementById("agentMessage")
+        .innerText =
+        `Based on your selected skills, I created a personalized preparation plan for your goal of becoming a ${user.role}.`;
+
+    createSkillAnalysis();
+
+    createRoadmap();
+
+    updateStats();
+
+}
+
+
+// ==============================
+// SKILL ANALYSIS
+// ==============================
+
+function createSkillAnalysis() {
+
+    let skills =
+        user.skills.length
+        ? user.skills
+        : ["Python", "SQL", "Communication"];
+
+    let html = "";
+
+    skills.forEach((skill, index) => {
+
+        let percentage =
+            45 + (index * 10);
+
+        if (percentage > 85) {
+            percentage = 85;
+        }
+
+        html += `
+
+        <div class="skill-row">
+
+            <div class="skill-info">
+
+                <span>${skill}</span>
+
+                <b>${percentage}%</b>
 
             </div>
 
-
-        </div>
-
-        `
-
-    );
-
-}
-
-
-function agentReply(type) {
-
-    let reply = "";
-
-
-    if (type === "focus") {
-
-        reply = `
-
-        🎯 Based on your current performance,
-        focus on SQL today.
-
-        <br><br>
-
-        Your SQL skill is 55%.
-        Complete 5 SQL questions and review
-        JOIN operations.
-
-        `;
-
-    }
-
-
-    if (type === "skill") {
-
-        reply = `
-
-        📊 Your strongest skill is Python at 82%.
-
-        <br><br>
-
-        Your biggest improvement areas are:
-
-        <br>
-
-        • Data Structures - 42%
-
-        <br>
-
-        • SQL - 55%
-
-        <br><br>
-
-        I recommend improving SQL first.
-
-        `;
-
-    }
-
-
-    if (type === "plan") {
-
-        reply = `
-
-        🗺️ Your AI preparation plan:
-
-        <br><br>
-
-        Week 1: SQL Fundamentals
-
-        <br>
-
-        Week 2: Data Structures
-
-        <br>
-
-        Week 3: Coding Practice
-
-        <br>
-
-        Week 4: Mock Interviews
-
-        `;
-
-    }
-
-
-    document.getElementById(
-
-        "agent-reply"
-
-    ).innerHTML = `
-
-        <div class="ai-response">
-
-            <strong>
-                🤖 CareerPilot AI
-            </strong>
-
-            <br><br>
-
-            ${reply}
-
-        </div>
-
-    `;
-
-}
-
-
-// ===============================
-// PRACTICE
-// ===============================
-
-function openPractice(type) {
-
-
-    if (type === "aptitude") {
-
-        openModal(
-
-            "🧮 Aptitude Practice",
-
-            `
-
-            <div class="question">
-
-                <h3>
-
-                If a number is increased by 20%
-                and then decreased by 20%,
-                what is the final change?
-
-                </h3>
-
-
-                <button class="option"
-                    onclick="checkAnswer(this, false)">
-
-                    A. No Change
-
-                </button>
-
-
-                <button class="option"
-                    onclick="checkAnswer(this, false)">
-
-                    B. 4% Increase
-
-                </button>
-
-
-                <button class="option"
-                    onclick="checkAnswer(this, true)">
-
-                    C. 4% Decrease
-
-                </button>
-
-
-                <button class="option"
-                    onclick="checkAnswer(this, false)">
-
-                    D. 2% Decrease
-
-                </button>
-
-
-                <div id="answer">
+            <div class="skill-bar">
+
+                <div
+                    class="skill-fill"
+                    style="width:${percentage}%">
 
                 </div>
 
             </div>
 
-            `
+        </div>
 
-        );
+        `;
 
-    }
+    });
 
-
-    if (type === "technical") {
-
-        openModal(
-
-            "💻 Technical Practice",
-
-            `
-
-            <div class="question">
-
-                <h3>
-
-                Which Python data type is
-                ordered and changeable?
-
-                </h3>
-
-
-                <button class="option"
-                    onclick="checkAnswer(this, true)">
-
-                    A. List
-
-                </button>
-
-
-                <button class="option"
-                    onclick="checkAnswer(this, false)">
-
-                    B. Tuple
-
-                </button>
-
-
-                <button class="option"
-                    onclick="checkAnswer(this, false)">
-
-                    C. Set
-
-                </button>
-
-
-                <button class="option"
-                    onclick="checkAnswer(this, false)">
-
-                    D. Frozen Set
-
-                </button>
-
-
-                <div id="answer">
-
-                </div>
-
-            </div>
-
-            `
-
-        );
-
-    }
-
-
-    if (type === "coding") {
-
-        openModal(
-
-            "⌨️ Coding Practice",
-
-            `
-
-            <div class="question">
-
-                <h3>
-
-                Write a Python program to check
-                whether a number is even or odd.
-
-                </h3>
-
-
-                <textarea
-
-                    id="code-input"
-
-                    placeholder="Write your Python code here...">
-
-                </textarea>
-
-
-                <button class="purple-button"
-
-                    onclick="reviewCode()">
-
-                    🤖 Ask AI to Review
-
-                </button>
-
-
-                <div id="code-result">
-
-                </div>
-
-            </div>
-
-            `
-
-        );
-
-    }
-
-
-    if (type === "interview") {
-
-        openModal(
-
-            "🎤 AI Mock Interview",
-
-            `
-
-            <div class="question">
-
-                <h3>
-
-                Tell me about yourself.
-
-                </h3>
-
-
-                <textarea
-
-                    id="interview-input"
-
-                    placeholder="Type your answer here...">
-
-                </textarea>
-
-
-                <button class="purple-button"
-
-                    onclick="reviewInterview()">
-
-                    🤖 Get AI Feedback
-
-                </button>
-
-
-                <div id="interview-result">
-
-                </div>
-
-            </div>
-
-            `
-
-        );
-
-    }
+    document
+        .getElementById("skillAnalysis")
+        .innerHTML = html;
 
 }
 
 
-// ===============================
-// CHECK ANSWER
-// ===============================
+// ==============================
+// ROADMAP
+// ==============================
 
-function checkAnswer(button, correct) {
+function createRoadmap() {
 
+    let roadmap = [
 
-    const answer =
+        "Strengthen your core technical skills",
 
-        document.getElementById("answer");
+        "Practice aptitude and logical reasoning",
 
+        "Solve coding problems regularly",
 
-    if (correct) {
+        "Improve SQL and data structures",
 
-        answer.innerHTML = `
+        "Complete mock interviews"
 
-            <div class="ai-response">
+    ];
 
-                ✅ Correct!
+    let html = "";
 
-                <br><br>
+    roadmap.forEach((item, index) => {
 
-                Excellent work.
-                Keep practicing to improve
-                your placement readiness.
+        html += `
 
+        <div class="roadmap-item">
+
+            <div class="roadmap-number">
+                ${index + 1}
             </div>
 
-        `;
+            <div>
 
-        button.style.borderColor =
+                <b>${item}</b>
 
-            "#49b878";
-
-    }
-
-    else {
-
-        answer.innerHTML = `
-
-            <div class="ai-response">
-
-                ❌ Not quite.
-
-                <br><br>
-
-                🤖 AI Hint:
-                Try calculating the percentage
-                step by step.
+                <p>
+                    AI recommended step for your placement preparation.
+                </p>
 
             </div>
-
-        `;
-
-    }
-
-}
-
-
-// ===============================
-// CODE REVIEW
-// ===============================
-
-function reviewCode() {
-
-
-    const code =
-
-        document.getElementById(
-
-            "code-input"
-
-        ).value;
-
-
-    const result =
-
-        document.getElementById(
-
-            "code-result"
-
-        );
-
-
-    if (code.trim() === "") {
-
-        result.innerHTML = `
-
-            <div class="ai-response">
-
-                🤖 Please write your code first.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    if (
-
-        code.includes("if") &&
-
-        code.includes("%")
-
-    ) {
-
-        result.innerHTML = `
-
-            <div class="ai-response">
-
-                🤖 AI Review:
-
-                <br><br>
-
-                ✅ Your approach looks correct.
-
-                <br><br>
-
-                💡 Tip:
-                Use int() to convert
-                user input into a number.
-
-            </div>
-
-        `;
-
-    }
-
-    else {
-
-        result.innerHTML = `
-
-            <div class="ai-response">
-
-                🤖 Try using the modulo operator %
-
-                to check whether the remainder is 0.
-
-            </div>
-
-        `;
-
-    }
-
-}
-
-
-// ===============================
-// INTERVIEW REVIEW
-// ===============================
-
-function reviewInterview() {
-
-
-    const answer =
-
-        document.getElementById(
-
-            "interview-input"
-
-        ).value;
-
-
-    const result =
-
-        document.getElementById(
-
-            "interview-result"
-
-        );
-
-
-    if (answer.trim() === "") {
-
-        result.innerHTML = `
-
-            <div class="ai-response">
-
-                🤖 Please write your answer first.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    result.innerHTML = `
-
-        <div class="ai-response">
-
-            🤖 AI Interview Feedback:
-
-            <br><br>
-
-            ✅ Good attempt!
-
-            <br><br>
-
-            Include these points:
-
-            <br>
-
-            • Your education
-
-            <br>
-
-            • Your technical skills
-
-            <br>
-
-            • Your project
-
-            <br>
-
-            • Your career goal
-
-            <br><br>
-
-            ⭐ Recommended structure:
-
-            Present → Skills → Project → Goal
 
         </div>
 
-    `;
+        `;
+
+    });
+
+    document
+        .getElementById("roadmap")
+        .innerHTML = html;
 
 }
 
 
-// ===============================
-// PROFILE
-// ===============================
+// ==============================
+// START PRACTICE
+// ==============================
 
-function showProfile() {
+function startPractice(type) {
 
+    currentType = type;
 
-    openModal(
+    currentQuestion = 0;
 
-        "👤 My Profile",
+    score = 0;
 
-        `
+    document
+        .getElementById("dashboardSection")
+        .classList.add("hidden");
 
-        <div class="question">
+    document
+        .getElementById("progressSection")
+        .classList.add("hidden");
 
-            <h3>
-                Student Profile
-            </h3>
+    document
+        .getElementById("practiceSection")
+        .classList.remove("hidden");
 
-            <br>
-
-            👤 Name: Sindhu
-
-            <br><br>
-
-            🎓 Status: Final Year Student
-
-            <br><br>
-
-            💼 Target Role: Python Developer
-
-            <br><br>
-
-            🐍 Primary Skill: Python
-
-            <br><br>
-
-            🎯 Readiness: 68%
-
-        </div>
-
-        `
-
-    );
+    loadQuestion();
 
 }
 
 
-// ===============================
-// PROGRESS
-// ===============================
+// ==============================
+// LOAD QUESTION
+// ==============================
 
-function showProgress() {
+function loadQuestion() {
 
+    let questions;
 
-    openModal(
+    if (currentType === "aptitude") {
 
-        "📊 My Progress",
+        questions = aptitudeQuestions;
 
-        `
+    }
 
-        <div class="question">
+    if (currentType === "technical") {
 
-            <h3>
-                Your Preparation Progress
-            </h3>
+        questions = technicalQuestions;
 
-            <br>
+    }
 
-            🎯 Placement Readiness: 68%
+    if (currentType === "coding") {
 
-            <br><br>
+        questions = codingQuestions;
 
-            🔥 Current Streak: 7 Days
+    }
 
-            <br><br>
+    if (currentType === "interview") {
 
-            ✅ Questions Solved: 124
+        questions = interviewQuestions;
 
-            <br><br>
-
-            💻 Coding Problems: 32
-
-            <br><br>
-
-            🎤 Mock Interviews: 5
-
-        </div>
-
-        `
-
-    );
-
-}
-
-
-// ===============================
-// MENU SECTION
-// ===============================
-
-function showSection(section, button) {
+    }
 
 
     document
+        .getElementById("questionNumber")
+        .innerText =
+        `Question ${currentQuestion + 1} / 10`;
 
-        .querySelectorAll(".menu-item")
+    document
+        .getElementById("questionProgress")
+        .style.width =
+        `${((currentQuestion + 1) / 10) * 100}%`;
 
-        .forEach(item => {
+    document
+        .getElementById("feedback")
+        .innerHTML = "";
 
-            item.classList.remove("active");
+    document
+        .getElementById("nextButton")
+        .classList.add("hidden");
 
-        });
+
+    let question =
+        questions[currentQuestion];
 
 
-    button.classList.add("active");
+    if (
+        currentType === "aptitude" ||
+        currentType === "technical"
+    ) {
+
+        document
+            .getElementById("questionText")
+            .innerText =
+            question.question;
+
+        let html = "";
+
+        question.options.forEach(
+            (option, index) => {
+
+                html += `
+
+                <button
+                    class="option"
+                    onclick="checkAnswer(${index})">
+
+                    ${option}
+
+                </button>
+
+                `;
 
             }
+
+        );
+
+        document
+            .getElementById("answerArea")
+            .innerHTML = html;
+
+    }
+
+
+    else {
+
+        document
+            .getElementById("questionText")
+            .innerText =
+            question;
+
+        document
+            .getElementById("answerArea")
+            .innerHTML = `
+
+            <textarea
+                id="userAnswer"
+                placeholder="Write your answer here...">
+
+            </textarea>
+
+            <button
+                class="primary-btn"
+                onclick="submitTextAnswer()">
+
+                🤖 Get AI Feedback
+
+            </button>
+
+            `;
+
+    }
+
+}
+
+
+// ==============================
+// CHECK MCQ ANSWER
+// ==============================
+
+function checkAnswer(selected) {
+
+    let questions =
+        currentType === "aptitude"
+        ? aptitudeQuestions
+        : technicalQuestions;
+
+    let question =
+        questions[currentQuestion];
+
+    let options =
+        document.querySelectorAll(".option");
+
+    options.forEach(
+        button => button.disabled = true
+    );
+
+
+    if (selected === question.answer) {
+
+        score++;
+
+        options[selected]
+            .classList.add("correct");
+
+        showFeedback(
+            "✅ Correct! Great job.",
+            true
+        );
+
+    }
+
+    else {
+
+        options[selected]
+            .classList.add("wrong");
+
+        options[question.answer]
+            .classList.add("correct");
+
+        showFeedback(
+            "❌ Incorrect. Review this topic and try again.",
+            false
+        );
+
+    }
+
+    document
+        .getElementById("nextButton")
+        .classList.remove("hidden");
+
+}
+
+
+// ==============================
+// TEXT ANSWER
+// ==============================
+
+function submitTextAnswer() {
+
+    let answer =
+        document
+        .getElementById("userAnswer")
+        .value
+        .trim();
+
+    if (!answer) {
+
+        showFeedback(
+            "🤖 Please write your answer first.",
+            false
+        );
+
+        return;
+
+    }
+
+    score++;
+
+    showFeedback(
+
+        `🤖 AI Feedback:
+
+        <br><br>
+
+        Good attempt!
+
+        <br><br>
+
+        Try to include clear examples and explain your answer confidently.
+
+        `,
+
+        true
+
+    );
+
+    document
+        .getElementById("nextButton")
+        .classList.remove("hidden");
+
+}
+
+
+// ==============================
+// NEXT QUESTION
+// ==============================
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+    if (currentQuestion >= 10) {
+
+        finishPractice();
+
+        return;
+
+    }
+
+    loadQuestion();
+
+}
+
+
+// ==============================
+// FINISH
+// ==============================
+
+function finishPractice() {
+
+    progress[currentType] = score;
+
+    totalSolved += 10;
+
+    localStorage.setItem(
+        "placementProgress",
+        JSON.stringify(progress)
+    );
+
+    updateStats();
+
+
+    document
+        .getElementById("questionText")
+        .innerHTML =
+        `🎉 ${currentType.toUpperCase()} COMPLETED`;
+
+    document
+        .getElementById("answerArea")
+        .innerHTML = `
+
+        <div class="feedback success">
+
+            <h2>
+                Your Score: ${score} / 10
+            </h2>
+
+            <br>
+
+            ${getPerformanceMessage(score)}
+
+        </div>
+
+        `;
+
+    document
+        .getElementById("feedback")
+        .innerHTML = "";
+
+    document
+        .getElementById("nextButton")
+        .classList.add("hidden");
+
+}
+
+
+function getPerformanceMessage(score) {
+
+    if (score >= 8) {
+
+        return "🌟 Excellent performance! Keep practicing.";
+
+    }
+
+    if (score >= 5) {
+
+        return "👍 Good performance. Continue improving.";
+
+    }
+
+    return "💪 Keep practicing. You can improve with consistency.";
+
+}
+
+
+// ==============================
+// FEEDBACK
+// ==============================
+
+function showFeedback(message, success) {
+
+    document
+        .getElementById("feedback")
+        .innerHTML = `
+
+        <div class="feedback ${success ? "success" : "error"}">
+
+            ${message}
+
+        </div>
+
+        `;
+
+}
+
+
+// ==============================
+// DASHBOARD
+// ==============================
+
+function showDashboard() {
+
+    document
+        .getElementById("practiceSection")
+        .classList.add("hidden");
+
+    document
+        .getElementById("progressSection")
+        .classList.add("hidden");
+
+    document
+        .getElementById("dashboardSection")
+        .classList.remove("hidden");
+
+}
+
+
+// ==============================
+// PROGRESS
+// ==============================
+
+function showProgress() {
+
+    document
+        .getElementById("dashboardSection")
+        .classList.add("hidden");
+
+    document
+        .getElementById("practiceSection")
+        .classList.add("hidden");
+
+    document
+        .getElementById("progressSection")
+        .classList.remove("hidden");
+
+
+    let html = "";
+
+    Object.keys(progress).forEach(type => {
+
+        html += `
+
+        <p>
+
+            ${type.toUpperCase()} :
+
+            <b>${progress[type]} / 10</b>
+
+        </p>
+
+        `;
+
+    });
+
+
+    document
+        .getElementById("progressContent")
+        .innerHTML = html;
+
+}
+
+
+// ==============================
+// UPDATE STATS
+// ==============================
+
+function updateStats() {
+
+    let total =
+
+        progress.aptitude +
+
+        progress.technical +
+
+        progress.coding +
+
+        progress.interview;
+
+
+    let readiness =
+        Math.min(
+            Math.round((total / 40) * 100),
+            100
+        );
+
+
+    document
+        .getElementById("readiness")
+        .innerText =
+        readiness + "%";
+
+
+    document
+        .getElementById("solved")
+        .innerText =
+        total;
+
+
+}
+
+
+// ==============================
+// AI RECOMMENDATION
+// ==============================
+
+function showRecommendation() {
+
+    let weakest =
+        Object.keys(progress)
+        .sort(
+            (a, b) =>
+            progress[a] - progress[b]
+        )[0];
+
+    alert(
+
+        `🤖 AI Recommendation:
+
+Focus more on ${weakest} practice.
+
+Your AI agent recommends completing
+10 questions in this area next.`
+
+    );
+
+}
+
+
+// ==============================
+// CHANGE PROFILE
+// ==============================
+
+function resetUser() {
+
+    localStorage.clear();
+
+    location.reload();
+
+}
+
+
+// ==============================
+// LOAD SAVED USER
+// ==============================
+
+let savedUser =
+    localStorage.getItem("placementUser");
+
+
+if (savedUser) {
+
+    user =
+        JSON.parse(savedUser);
+
+    document
+        .getElementById("setupScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("app")
+        .classList.remove("hidden");
+
+    loadDashboard();
+
+}
+
+
+let savedProgress =
+    localStorage.getItem(
+        "placementProgress"
+    );
+
+
+if (savedProgress) {
+
+    progress =
+        JSON.parse(savedProgress);
+
+              }

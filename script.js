@@ -2,20 +2,29 @@
 // AI PLACEMENT PREPARATION AGENT
 // =====================================
 
+
 let user = {
+
     name: "",
+
     role: "",
+
     skills: []
+
 };
 
+
 let currentType = "";
+
 let currentQuestion = 0;
+
 let score = 0;
 
 
 // =====================================
 // QUESTIONS
 // =====================================
+
 
 const aptitudeQuestions = [
 
@@ -57,25 +66,45 @@ const aptitudeQuestions = [
 
     {
         question: "A train travels 60 km in 2 hours. What is its speed?",
-        options: ["20 km/h", "30 km/h", "40 km/h", "60 km/h"],
+        options: [
+            "20 km/h",
+            "30 km/h",
+            "40 km/h",
+            "60 km/h"
+        ],
         answer: 1
     },
 
     {
         question: "Find the odd one: Apple, Mango, Carrot, Banana",
-        options: ["Apple", "Mango", "Carrot", "Banana"],
+        options: [
+            "Apple",
+            "Mango",
+            "Carrot",
+            "Banana"
+        ],
         answer: 2
     },
 
     {
         question: "If today is Monday, after 3 days?",
-        options: ["Tuesday", "Wednesday", "Thursday", "Friday"],
+        options: [
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+        ],
         answer: 2
     },
 
     {
         question: "What is 10 × 10?",
-        options: ["10", "50", "100", "1000"],
+        options: [
+            "10",
+            "50",
+            "100",
+            "1000"
+        ],
         answer: 2
     }
 
@@ -86,13 +115,23 @@ const technicalQuestions = [
 
     {
         question: "Which keyword defines a function in Python?",
-        options: ["function", "def", "fun", "define"],
+        options: [
+            "function",
+            "def",
+            "fun",
+            "define"
+        ],
         answer: 1
     },
 
     {
         question: "Which is ordered and changeable in Python?",
-        options: ["Tuple", "Set", "List", "String"],
+        options: [
+            "Tuple",
+            "Set",
+            "List",
+            "String"
+        ],
         answer: 2
     },
 
@@ -109,19 +148,34 @@ const technicalQuestions = [
 
     {
         question: "Which SQL command retrieves data?",
-        options: ["GET", "SELECT", "FETCH", "SHOW"],
+        options: [
+            "GET",
+            "SELECT",
+            "FETCH",
+            "SHOW"
+        ],
         answer: 1
     },
 
     {
         question: "Which symbol is used for Python comments?",
-        options: ["//", "#", "/*", "--"],
+        options: [
+            "//",
+            "#",
+            "/*",
+            "--"
+        ],
         answer: 1
     },
 
     {
         question: "Which HTML tag creates a paragraph?",
-        options: ["<p>", "<para>", "<text>", "<paragraph>"],
+        options: [
+            "<p>",
+            "<para>",
+            "<text>",
+            "<paragraph>"
+        ],
         answer: 0
     },
 
@@ -149,13 +203,23 @@ const technicalQuestions = [
 
     {
         question: "Which data structure follows FIFO?",
-        options: ["Stack", "Queue", "Tree", "Graph"],
+        options: [
+            "Stack",
+            "Queue",
+            "Tree",
+            "Graph"
+        ],
         answer: 1
     },
 
     {
         question: "Which command removes all rows from a table?",
-        options: ["DELETE", "DROP", "TRUNCATE", "REMOVE"],
+        options: [
+            "DELETE",
+            "DROP",
+            "TRUNCATE",
+            "REMOVE"
+        ],
         answer: 2
     }
 
@@ -216,7 +280,9 @@ const interviewQuestions = [
 // USER STORAGE
 // =====================================
 
+
 function getUserKey() {
+
 
     return "placement_user_" +
 
@@ -225,20 +291,26 @@ function getUserKey() {
             .toLowerCase()
             .replace(/\s+/g, "_");
 
+
 }
 
 
 function getSavedData() {
 
+
     let saved = localStorage.getItem(
+
         getUserKey()
+
     );
+
 
     if (saved) {
 
         return JSON.parse(saved);
 
     }
+
 
     return {
 
@@ -248,10 +320,12 @@ function getSavedData() {
 
     };
 
+
 }
 
 
 function saveData(data) {
+
 
     localStorage.setItem(
 
@@ -261,6 +335,7 @@ function saveData(data) {
 
     );
 
+
 }
 
 
@@ -268,85 +343,109 @@ function saveData(data) {
 // LOGIN / SETUP
 // =====================================
 
+
 document
     .getElementById("setupForm")
-    .addEventListener("submit", function (event) {
-
-        event.preventDefault();
-
-
-        let name = document
-            .getElementById("userName")
-            .value
-            .trim();
+    .addEventListener(
+        "submit",
+        function (event) {
 
 
-        let role = document
-            .getElementById("targetRole")
-            .value;
+            event.preventDefault();
 
 
-        let skills = [
-
-            ...document.querySelectorAll(
-                ".skills input:checked"
-            )
-
-        ].map(input => input.value);
+            let name = document
+                .getElementById("userName")
+                .value
+                .trim();
 
 
-        user = {
-
-            name: name,
-
-            role: role,
-
-            skills: skills
-
-        };
+            let role = document
+                .getElementById("targetRole")
+                .value;
 
 
-        let savedData = getSavedData();
+            let skills = [
+
+                ...document
+                    .querySelectorAll(
+                        ".skills input:checked"
+                    )
+
+            ].map(
+
+                input => input.value
+
+            );
 
 
-        if (
+            user = {
 
-            savedData.user &&
+                name: name,
 
-            Object.keys(savedData.progress).length > 0
+                role: role,
 
-        ) {
+                skills: skills
 
-            user = savedData.user;
+            };
 
-            openApp();
 
-            showWelcomeBackMessage();
+            let savedData = getSavedData();
+
+
+            if (
+
+                savedData.user &&
+
+                Object.keys(
+                    savedData.progress
+                ).length > 0
+
+            ) {
+
+
+                user = savedData.user;
+
+
+                openApp();
+
+
+                showWelcomeBackMessage();
+
+
+            }
+
+
+            else {
+
+
+                saveData({
+
+                    user: user,
+
+                    progress: {}
+
+                });
+
+
+                openApp();
+
+
+            }
+
 
         }
 
-        else {
-
-            saveData({
-
-                user: user,
-
-                progress: {}
-
-            });
-
-            openApp();
-
-        }
-
-    });
+    );
 
 
 // =====================================
-// OPEN APPLICATION
+// OPEN APP
 // =====================================
+
 
 function openApp() {
+
 
     document
         .getElementById("setupScreen")
@@ -362,6 +461,7 @@ function openApp() {
 
     loadDashboard();
 
+
 }
 
 
@@ -369,7 +469,9 @@ function openApp() {
 // DASHBOARD
 // =====================================
 
+
 function loadDashboard() {
+
 
     document
         .getElementById("welcomeText")
@@ -380,12 +482,16 @@ function loadDashboard() {
 
     document
         .getElementById("profileName")
-        .innerText = user.name;
+        .innerText =
+
+        user.name;
 
 
     document
         .getElementById("role")
-        .innerText = user.role;
+        .innerText =
+
+        user.role;
 
 
     document
@@ -397,11 +503,15 @@ function loadDashboard() {
 
     createSkillAnalysis();
 
+
     createRoadmap();
+
 
     updateStats();
 
+
     createContinueCard();
+
 
 }
 
@@ -410,17 +520,32 @@ function loadDashboard() {
 // WELCOME BACK
 // =====================================
 
+
 function showWelcomeBackMessage() {
 
-    setTimeout(function () {
 
-        alert(
+    setTimeout(
 
-            `Welcome back, ${user.name}! 👋\n\nYour progress has been saved. You can continue from where you stopped.`
+        function () {
 
-        );
 
-    }, 500);
+            alert(
+
+                `Welcome back, ${user.name}! 👋
+
+Your progress has been saved.
+
+You can continue from where you stopped.`
+
+            );
+
+
+        },
+
+        500
+
+    );
+
 
 }
 
@@ -429,16 +554,25 @@ function showWelcomeBackMessage() {
 // CONTINUE CARD
 // =====================================
 
+
 function createContinueCard() {
+
 
     let data = getSavedData();
 
+
     let progress = data.progress;
+
 
     let html = "";
 
 
-    for (let type in progress) {
+    for (
+
+        let type in progress
+
+    ) {
+
 
         let item = progress[type];
 
@@ -451,20 +585,21 @@ function createContinueCard() {
 
         ) {
 
+
             html += `
 
                 <div class="continue-box">
 
                     <h2>
 
-                        🔄 Continue ${type.toUpperCase()}
+                        🔄 Continue
+                        ${type.toUpperCase()}
 
                     </h2>
 
                     <p>
 
                         Completed:
-
                         ${item.question} / 10
 
                     </p>
@@ -472,7 +607,6 @@ function createContinueCard() {
                     <p>
 
                         Score:
-
                         ${item.score}
 
                     </p>
@@ -481,12 +615,12 @@ function createContinueCard() {
 
                         class="primary-btn"
 
-                        onclick="startPractice('${type}')">
+                        onclick="startPractice('${type}')"
+
+                    >
 
                         Continue from Question
-
                         ${item.question + 1}
-
                         →
 
                     </button>
@@ -495,7 +629,9 @@ function createContinueCard() {
 
             `;
 
+
         }
+
 
     }
 
@@ -504,6 +640,7 @@ function createContinueCard() {
         .getElementById("continueCard")
         .innerHTML = html;
 
+
 }
 
 
@@ -511,7 +648,9 @@ function createContinueCard() {
 // START PRACTICE
 // =====================================
 
+
 function startPractice(type) {
+
 
     currentType = type;
 
@@ -519,23 +658,34 @@ function startPractice(type) {
     let data = getSavedData();
 
 
-    if (data.progress[type]) {
+    if (
+
+        data.progress[type]
+
+    ) {
+
 
         currentQuestion =
 
             data.progress[type].question;
 
+
         score =
 
             data.progress[type].score;
 
+
     }
+
 
     else {
 
+
         currentQuestion = 0;
 
+
         score = 0;
+
 
     }
 
@@ -567,6 +717,7 @@ function startPractice(type) {
 
     loadQuestion();
 
+
 }
 
 
@@ -574,41 +725,73 @@ function startPractice(type) {
 // LOAD QUESTION
 // =====================================
 
+
 function loadQuestion() {
+
 
     let questions;
 
 
-    if (currentType === "aptitude") {
+    if (
+
+        currentType === "aptitude"
+
+    ) {
+
 
         questions = aptitudeQuestions;
 
+
     }
 
-    else if (currentType === "technical") {
+
+    else if (
+
+        currentType === "technical"
+
+    ) {
+
 
         questions = technicalQuestions;
 
+
     }
 
-    else if (currentType === "coding") {
+
+    else if (
+
+        currentType === "coding"
+
+    ) {
+
 
         questions = codingQuestions;
 
+
     }
+
 
     else {
 
+
         questions = interviewQuestions;
+
 
     }
 
 
-    if (currentQuestion >= 10) {
+    if (
+
+        currentQuestion >= 10
+
+    ) {
+
 
         showCompleted();
 
+
         return;
+
 
     }
 
@@ -622,7 +805,8 @@ function loadQuestion() {
 
     document
         .getElementById("questionProgress")
-        .style.width =
+        .style
+        .width =
 
         `${((currentQuestion + 1) / 10) * 100}%`;
 
@@ -638,7 +822,9 @@ function loadQuestion() {
         .add("hidden");
 
 
-    let question = questions[currentQuestion];
+    let question =
+
+        questions[currentQuestion];
 
 
     if (
@@ -649,9 +835,12 @@ function loadQuestion() {
 
     ) {
 
+
         document
             .getElementById("questionText")
-            .innerText = question.question;
+            .innerText =
+
+            question.question;
 
 
         let html = "";
@@ -659,7 +848,14 @@ function loadQuestion() {
 
         question.options.forEach(
 
-            function (option, index) {
+            function (
+
+                option,
+
+                index
+
+            ) {
+
 
                 html += `
 
@@ -667,13 +863,16 @@ function loadQuestion() {
 
                         class="option"
 
-                        onclick="checkAnswer(${index})">
+                        onclick="checkAnswer(${index})"
+
+                    >
 
                         ${option}
 
                     </button>
 
                 `;
+
 
             }
 
@@ -684,13 +883,18 @@ function loadQuestion() {
             .getElementById("answerArea")
             .innerHTML = html;
 
+
     }
+
 
     else {
 
+
         document
             .getElementById("questionText")
-            .innerText = question;
+            .innerText =
+
+            question;
 
 
         document
@@ -701,15 +905,17 @@ function loadQuestion() {
 
                     id="userAnswer"
 
-                    placeholder="Write your answer here...">
+                    placeholder="Write your answer here..."
 
-                </textarea>
+                ></textarea>
 
                 <button
 
                     class="primary-btn"
 
-                    onclick="submitTextAnswer()">
+                    onclick="submitTextAnswer()"
+
+                >
 
                     Submit Answer 🤖
 
@@ -717,7 +923,9 @@ function loadQuestion() {
 
             `;
 
+
     }
+
 
 }
 
@@ -726,7 +934,9 @@ function loadQuestion() {
 // CHECK MCQ ANSWER
 // =====================================
 
+
 function checkAnswer(selected) {
+
 
     let questions =
 
@@ -744,7 +954,10 @@ function checkAnswer(selected) {
 
     let options =
 
-        document.querySelectorAll(".option");
+        document
+            .querySelectorAll(
+                ".option"
+            );
 
 
     options.forEach(
@@ -758,7 +971,12 @@ function checkAnswer(selected) {
     );
 
 
-    if (selected === question.answer) {
+    if (
+
+        selected === question.answer
+
+    ) {
+
 
         score++;
 
@@ -776,9 +994,12 @@ function checkAnswer(selected) {
 
         );
 
+
     }
 
+
     else {
+
 
         options[selected]
             .classList
@@ -798,6 +1019,7 @@ function checkAnswer(selected) {
 
         );
 
+
     }
 
 
@@ -809,6 +1031,7 @@ function checkAnswer(selected) {
         .classList
         .remove("hidden");
 
+
 }
 
 
@@ -816,7 +1039,9 @@ function checkAnswer(selected) {
 // TEXT ANSWER CHECK
 // =====================================
 
+
 function submitTextAnswer() {
+
 
     let answer = document
         .getElementById("userAnswer")
@@ -826,10 +1051,19 @@ function submitTextAnswer() {
 
     let words = answer
         .split(/\s+/)
-        .filter(word => word.length > 0);
+        .filter(
+
+            word => word.length > 0
+
+        );
 
 
-    if (words.length < 5) {
+    if (
+
+        words.length < 5
+
+    ) {
+
 
         showFeedback(
 
@@ -839,14 +1073,23 @@ function submitTextAnswer() {
 
         );
 
+
         return;
+
 
     }
 
 
-    if (currentType === "interview") {
+    if (
 
-        let lowerAnswer = answer.toLowerCase();
+        currentType === "interview"
+
+    ) {
+
+
+        let lowerAnswer =
+
+            answer.toLowerCase();
 
 
         let keywords = [
@@ -878,16 +1121,24 @@ function submitTextAnswer() {
         ];
 
 
-        let foundKeywords = keywords.filter(
+        let foundKeywords =
 
-            keyword =>
+            keywords.filter(
 
-                lowerAnswer.includes(keyword)
+                keyword =>
 
-        );
+                    lowerAnswer
+                        .includes(keyword)
+
+            );
 
 
-        if (foundKeywords.length < 2) {
+        if (
+
+            foundKeywords.length < 2
+
+        ) {
+
 
             showFeedback(
 
@@ -897,7 +1148,9 @@ function submitTextAnswer() {
 
             );
 
+
             return;
+
 
         }
 
@@ -913,10 +1166,12 @@ function submitTextAnswer() {
 
         );
 
+
     }
 
 
     else {
+
 
         let codingKeywords = [
 
@@ -939,16 +1194,25 @@ function submitTextAnswer() {
         ];
 
 
-        let found = codingKeywords.filter(
+        let found =
 
-            keyword =>
+            codingKeywords.filter(
 
-                answer.toLowerCase().includes(keyword)
+                keyword =>
 
-        );
+                    answer
+                        .toLowerCase()
+                        .includes(keyword)
+
+            );
 
 
-        if (found.length < 1) {
+        if (
+
+            found.length < 1
+
+        ) {
+
 
             showFeedback(
 
@@ -958,7 +1222,9 @@ function submitTextAnswer() {
 
             );
 
+
             return;
+
 
         }
 
@@ -974,6 +1240,7 @@ function submitTextAnswer() {
 
         );
 
+
     }
 
 
@@ -985,6 +1252,7 @@ function submitTextAnswer() {
         .classList
         .remove("hidden");
 
+
 }
 
 
@@ -992,7 +1260,9 @@ function submitTextAnswer() {
 // SAVE PROGRESS
 // =====================================
 
+
 function saveProgress() {
+
 
     let data = getSavedData();
 
@@ -1002,16 +1272,23 @@ function saveProgress() {
 
     data.progress[currentType] = {
 
-        question: currentQuestion + 1,
+
+        question:
+
+            currentQuestion + 1,
+
 
         score: score,
 
+
         completed: false
+
 
     };
 
 
     saveData(data);
+
 
 }
 
@@ -1020,23 +1297,36 @@ function saveProgress() {
 // NEXT QUESTION
 // =====================================
 
+
 function nextQuestion() {
+
 
     currentQuestion++;
 
 
-    if (currentQuestion >= 10) {
+    if (
 
-        let data = getSavedData();
+        currentQuestion >= 10
+
+    ) {
+
+
+        let data =
+
+            getSavedData();
 
 
         data.progress[currentType] = {
 
+
             question: 10,
+
 
             score: score,
 
+
             completed: true
+
 
         };
 
@@ -1046,14 +1336,18 @@ function nextQuestion() {
 
         showCompleted();
 
+
         return;
+
 
     }
 
 
     saveProgress();
 
+
     loadQuestion();
+
 
 }
 
@@ -1062,7 +1356,9 @@ function nextQuestion() {
 // COMPLETED
 // =====================================
 
+
 function showCompleted() {
+
 
     document
         .getElementById("questionText")
@@ -1080,7 +1376,6 @@ function showCompleted() {
                 <h2>
 
                     Your Score:
-
                     ${score} / 10
 
                 </h2>
@@ -1099,6 +1394,7 @@ function showCompleted() {
         .classList
         .add("hidden");
 
+
 }
 
 
@@ -1106,7 +1402,15 @@ function showCompleted() {
 // FEEDBACK
 // =====================================
 
-function showFeedback(message, success) {
+
+function showFeedback(
+
+    message,
+
+    success
+
+) {
+
 
     document
         .getElementById("feedback")
@@ -1114,13 +1418,18 @@ function showFeedback(message, success) {
 
             <div class="feedback
 
-                ${success ? "success" : "error"}">
+                ${success
+                    ? "success"
+                    : "error"}"
+
+            >
 
                 ${message}
 
             </div>
 
         `;
+
 
 }
 
@@ -1129,7 +1438,9 @@ function showFeedback(message, success) {
 // DASHBOARD
 // =====================================
 
+
 function showDashboard() {
+
 
     document
         .getElementById("practiceSection")
@@ -1151,6 +1462,7 @@ function showDashboard() {
 
     loadDashboard();
 
+
 }
 
 
@@ -1158,7 +1470,9 @@ function showDashboard() {
 // PROGRESS
 // =====================================
 
+
 function showProgress() {
+
 
     document
         .getElementById("dashboardSection")
@@ -1178,7 +1492,9 @@ function showProgress() {
         .remove("hidden");
 
 
-    let data = getSavedData();
+    let data =
+
+        getSavedData();
 
 
     let html = "";
@@ -1197,61 +1513,79 @@ function showProgress() {
     ];
 
 
-    types.forEach(function (type) {
+    types.forEach(
 
-        let item = data.progress[type];
-
-
-        let completed = item
-
-            ? item.question
-
-            : 0;
+        function (type) {
 
 
-        let currentScore = item
+            let item =
 
-            ? item.score
-
-            : 0;
+                data.progress[type];
 
 
-        html += `
+            let completed =
 
-            <div class="progress-item">
+                item
 
-                <h3>
+                    ? item.question
 
-                    ${type.toUpperCase()}
+                    : 0;
 
-                </h3>
 
-                <p>
+            let currentScore =
 
-                    Completed:
+                item
 
-                    ${completed} / 10
+                    ? item.score
 
-                </p>
+                    : 0;
 
-                <p>
 
-                    Score:
+            html += `
 
-                    ${currentScore}
+                <div
 
-                </p>
+                    class="progress-item"
 
-            </div>
+                >
 
-        `;
+                    <h3>
 
-    });
+                        ${type.toUpperCase()}
+
+                    </h3>
+
+
+                    <p>
+
+                        Completed:
+                        ${completed} / 10
+
+                    </p>
+
+
+                    <p>
+
+                        Score:
+                        ${currentScore}
+
+                    </p>
+
+
+                </div>
+
+            `;
+
+
+        }
+
+    );
 
 
     document
         .getElementById("progressContent")
         .innerHTML = html;
+
 
 }
 
@@ -1260,21 +1594,35 @@ function showProgress() {
 // STATS
 // =====================================
 
+
 function updateStats() {
 
-    let data = getSavedData();
+
+    let data =
+
+        getSavedData();
 
 
     let total = 0;
 
 
     Object
-        .values(data.progress)
-        .forEach(item => {
+        .values(
+            data.progress
+        )
+        .forEach(
 
-            total += item.question || 0;
+            item => {
 
-        });
+
+                total +=
+
+                    item.question || 0;
+
+
+            }
+
+        );
 
 
     let readiness = Math.round(
@@ -1291,7 +1639,10 @@ function updateStats() {
 
     document
         .getElementById("readiness")
-        .innerText = readiness + "%";
+        .innerText =
+
+        readiness + "%";
+
 
 }
 
@@ -1300,74 +1651,111 @@ function updateStats() {
 // SKILL ANALYSIS
 // =====================================
 
+
 function createSkillAnalysis() {
 
-    let skills = user.skills.length
 
-        ? user.skills
+    let skills =
 
-        : [
+        user.skills.length
 
-            "Python",
+            ? user.skills
 
-            "SQL",
+            : [
 
-            "Communication"
+                "Python",
 
-        ];
+                "SQL",
+
+                "Communication"
+
+            ];
 
 
     let html = "";
 
 
-    skills.forEach(function (skill, index) {
+    skills.forEach(
 
-        let percentage = 45 + index * 10;
+        function (
 
+            skill,
 
-        html += `
+            index
 
-            <div class="skill-row">
-
-                <div class="skill-info">
-
-                    <span>
-
-                        ${skill}
-
-                    </span>
-
-                    <b>
-
-                        ${percentage}%
-
-                    </b>
-
-                </div>
+        ) {
 
 
-                <div class="skill-bar">
+            let percentage =
+
+                45 + index * 10;
+
+
+            html += `
+
+                <div
+
+                    class="skill-row"
+
+                >
 
                     <div
 
-                        class="skill-fill"
+                        class="skill-info"
 
-                        style="width:${percentage}%">
+                    >
+
+                        <span>
+
+                            ${skill}
+
+                        </span>
+
+
+                        <b>
+
+                            ${percentage}%
+
+                        </b>
+
 
                     </div>
 
+
+                    <div
+
+                        class="skill-bar"
+
+                    >
+
+                        <div
+
+                            class="skill-fill"
+
+                            style="width:${percentage}%"
+
+                        >
+
+                        </div>
+
+
+                    </div>
+
+
                 </div>
 
-            </div>
+            `;
 
-        `;
 
-    });
+        }
+
+    );
 
 
     document
         .getElementById("skillAnalysis")
         .innerHTML = html;
+
 
 }
 
@@ -1376,7 +1764,9 @@ function createSkillAnalysis() {
 // ROADMAP
 // =====================================
 
+
 function createRoadmap() {
+
 
     let roadmap = [
 
@@ -1396,65 +1786,101 @@ function createRoadmap() {
     let html = "";
 
 
-    roadmap.forEach(function (item, index) {
+    roadmap.forEach(
 
-        html += `
+        function (
 
-            <div class="roadmap-item">
+            item,
 
-                <div class="roadmap-number">
+            index
 
-                    ${index + 1}
+        ) {
+
+
+            html += `
+
+                <div
+
+                    class="roadmap-item"
+
+                >
+
+                    <div
+
+                        class="roadmap-number"
+
+                    >
+
+                        ${index + 1}
+
+                    </div>
+
+
+                    <div>
+
+                        <b>
+
+                            ${item}
+
+                        </b>
+
+
+                        <p>
+
+                            AI recommended preparation step.
+
+                        </p>
+
+
+                    </div>
+
 
                 </div>
 
+            `;
 
-                <div>
 
-                    <b>
+        }
 
-                        ${item}
-
-                    </b>
-
-                    <p>
-
-                        AI recommended preparation step.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
+    );
 
 
     document
         .getElementById("roadmap")
         .innerHTML = html;
 
+
 }
 
 
 // =====================================
-// AI ROBOT CHAT
+// AI CHAT
 // =====================================
+
 
 function sendMessage() {
 
-    let input = document
-        .getElementById("chatInput");
+
+    let input =
+
+        document
+            .getElementById(
+                "chatInput"
+            );
 
 
-    let message = input
-        .value
-        .trim();
+    let message =
+
+        input
+            .value
+            .trim();
 
 
-    if (message === "") {
+    if (
+
+        message === ""
+
+    ) {
 
         return;
 
@@ -1464,8 +1890,10 @@ function sendMessage() {
     let reply = "";
 
 
-    let text = message
-        .toLowerCase();
+    let text =
+
+        message
+            .toLowerCase();
 
 
     if (
@@ -1477,6 +1905,7 @@ function sendMessage() {
         text.includes("where")
 
     ) {
+
 
         reply = `
 
@@ -1492,7 +1921,9 @@ function sendMessage() {
 
         `;
 
+
     }
+
 
     else if (
 
@@ -1502,6 +1933,7 @@ function sendMessage() {
 
     ) {
 
+
         reply = `
 
             Your progress is saved automatically 💾
@@ -1510,13 +1942,16 @@ function sendMessage() {
 
         `;
 
+
     }
+
 
     else if (
 
         text.includes("interview")
 
     ) {
+
 
         reply = `
 
@@ -1530,13 +1965,16 @@ function sendMessage() {
 
         `;
 
+
     }
+
 
     else if (
 
         text.includes("aptitude")
 
     ) {
+
 
         reply = `
 
@@ -1548,13 +1986,16 @@ function sendMessage() {
 
         `;
 
+
     }
+
 
     else if (
 
         text.includes("technical")
 
     ) {
+
 
         reply = `
 
@@ -1564,9 +2005,12 @@ function sendMessage() {
 
         `;
 
+
     }
 
+
     else {
+
 
         reply = `
 
@@ -1590,23 +2034,29 @@ function sendMessage() {
 
         `;
 
+
     }
 
 
     document
-        .getElementById("chatMessages")
+        .getElementById(
+            "chatMessages"
+        )
         .innerHTML = `
 
-            <b>You:</b> ${message}
+            <b>You:</b>
+            ${message}
 
             <br><br>
 
-            <b>🤖 AI Coach:</b> ${reply}
+            <b>🤖 AI Coach:</b>
+            ${reply}
 
         `;
 
 
     input.value = "";
+
 
 }
 
@@ -1615,16 +2065,52 @@ function sendMessage() {
 // CHANGE USER
 // =====================================
 
+
 function resetUser() {
 
+
     location.reload();
+
 
 }
 
 
 // =====================================
-// START SCREEN
+// ENTER KEY CHAT
 // =====================================
+
+
+document
+    .getElementById("chatInput")
+    .addEventListener(
+
+        "keydown",
+
+        function (event) {
+
+
+            if (
+
+                event.key === "Enter"
+
+            ) {
+
+
+                sendMessage();
+
+
+            }
+
+
+        }
+
+    );
+
+
+// =====================================
+// INITIAL SCREEN
+// =====================================
+
 
 document
     .getElementById("setupScreen")

@@ -2,33 +2,20 @@
 // AI PLACEMENT PREPARATION AGENT
 // =====================================
 
-
-// CURRENT USER
-
 let user = {
-
     name: "",
-
     role: "",
-
     skills: []
-
 };
 
-
-// CURRENT PRACTICE
-
 let currentType = "";
-
 let currentQuestion = 0;
-
 let score = 0;
 
 
 // =====================================
 // QUESTIONS
 // =====================================
-
 
 const aptitudeQuestions = [
 
@@ -69,7 +56,7 @@ const aptitudeQuestions = [
     },
 
     {
-        question: "A train travels 60 km in 2 hours. Speed?",
+        question: "A train travels 60 km in 2 hours. What is its speed?",
         options: ["20 km/h", "30 km/h", "40 km/h", "60 km/h"],
         answer: 1
     },
@@ -167,7 +154,7 @@ const technicalQuestions = [
     },
 
     {
-        question: "Which command removes all rows?",
+        question: "Which command removes all rows from a table?",
         options: ["DELETE", "DROP", "TRUNCATE", "REMOVE"],
         answer: 2
     }
@@ -177,23 +164,23 @@ const technicalQuestions = [
 
 const codingQuestions = [
 
-    "Write a Python program to check even or odd.",
+    "Write a Python program to check whether a number is even or odd.",
 
     "Write a Python program to find the largest number.",
 
     "Write a Python program to reverse a string.",
 
-    "Write a Python program to check prime number.",
+    "Write a Python program to check whether a number is prime.",
 
     "Write a Python program to find factorial.",
 
-    "Write a Python program to find sum of a list.",
+    "Write a Python program to find the sum of a list.",
 
     "Write a Python program to count vowels.",
 
     "Write a Python program to check palindrome.",
 
-    "Write a Python program to find largest in a list.",
+    "Write a Python program to find the largest number in a list.",
 
     "Write a Python program for Fibonacci series."
 
@@ -226,39 +213,34 @@ const interviewQuestions = [
 
 
 // =====================================
-// USER STORAGE KEY
+// USER STORAGE
 // =====================================
 
 function getUserKey() {
 
-    return "placement_" +
+    return "placement_user_" +
 
         user.name
-
             .trim()
-
             .toLowerCase()
-
             .replace(/\s+/g, "_");
 
 }
 
 
-// =====================================
-// GET USER DATA
-// =====================================
-
 function getSavedData() {
 
-    return JSON.parse(
+    let saved = localStorage.getItem(
+        getUserKey()
+    );
 
-        localStorage.getItem(
+    if (saved) {
 
-            getUserKey()
+        return JSON.parse(saved);
 
-        )
+    }
 
-    ) || {
+    return {
 
         user: user,
 
@@ -268,10 +250,6 @@ function getSavedData() {
 
 }
 
-
-// =====================================
-// SAVE DATA
-// =====================================
 
 function saveData(data) {
 
@@ -287,147 +265,98 @@ function saveData(data) {
 
 
 // =====================================
-// SETUP FORM
+// LOGIN / SETUP
 // =====================================
 
 document
-
     .getElementById("setupForm")
+    .addEventListener("submit", function (event) {
 
-    .addEventListener(
-
-        "submit",
-
-        function(event) {
+        event.preventDefault();
 
 
-            event.preventDefault();
+        let name = document
+            .getElementById("userName")
+            .value
+            .trim();
 
 
-            let name =
-
-                document
-
-                    .getElementById("userName")
-
-                    .value
-
-                    .trim();
+        let role = document
+            .getElementById("targetRole")
+            .value;
 
 
-            let role =
+        let skills = [
 
-                document
+            ...document.querySelectorAll(
+                ".skills input:checked"
+            )
 
-                    .getElementById("targetRole")
-
-                    .value;
-
-
-            let skills =
-
-                [
-
-                    ...document
-
-                        .querySelectorAll(
-
-                            ".skills input:checked"
-
-                        )
-
-                ]
-
-                .map(
-
-                    input => input.value
-
-                );
+        ].map(input => input.value);
 
 
-            user = {
+        user = {
 
-                name: name,
+            name: name,
 
-                role: role,
+            role: role,
 
-                skills: skills
+            skills: skills
 
-            };
-
-
-            let savedData = getSavedData();
+        };
 
 
-            // If this is an existing user,
-
-            // preserve old progress.
-
-            if (
-
-                savedData.progress &&
-
-                Object.keys(
-
-                    savedData.progress
-
-                ).length > 0
-
-            ) {
+        let savedData = getSavedData();
 
 
-                user = savedData.user;
+        if (
 
+            savedData.user &&
 
-                showWelcomeBack();
+            Object.keys(savedData.progress).length > 0
 
+        ) {
 
-            }
+            user = savedData.user;
 
+            openApp();
 
-            else {
-
-
-                saveData({
-
-                    user: user,
-
-                    progress: {}
-
-                });
-
-
-                openApp();
-
-            }
+            showWelcomeBackMessage();
 
         }
 
-    );
+        else {
+
+            saveData({
+
+                user: user,
+
+                progress: {}
+
+            });
+
+            openApp();
+
+        }
+
+    });
 
 
 // =====================================
-// OPEN APP
+// OPEN APPLICATION
 // =====================================
 
 function openApp() {
 
-
     document
-
         .getElementById("setupScreen")
-
         .classList
-
         .add("hidden");
 
 
     document
-
         .getElementById("app")
-
         .classList
-
         .remove("hidden");
 
 
@@ -437,179 +366,61 @@ function openApp() {
 
 
 // =====================================
-// WELCOME BACK
-// =====================================
-
-function showWelcomeBack() {
-
-
-    let data = getSavedData();
-
-
-    let progress = data.progress;
-
-
-    let message = "";
-
-
-    let found = false;
-
-
-    for (
-
-        let type in progress
-
-    ) {
-
-
-        if (
-
-            progress[type].question > 0 &&
-
-            progress[type].question < 10
-
-        ) {
-
-
-            let displayName =
-
-                type.charAt(0)
-
-                    .toUpperCase() +
-
-                type.slice(1);
-
-
-            message += `
-
-                <div class="continue-box">
-
-                    <h2>
-
-                        Welcome back, ${user.name}! 👋
-
-                    </h2>
-
-                    <p>
-
-                        You completed
-
-                        <b>
-
-                            ${progress[type].question}
-
-                        </b>
-
-                        ${displayName} questions.
-
-                        Your score is
-
-                        <b>
-
-                            ${progress[type].score}
-
-                        </b>.
-
-                    </p>
-
-                    <p>
-
-                        Continue from
-
-                        <b>
-
-                            Question
-
-                            ${progress[type].question + 1}
-
-                        </b>
-
-                        🚀
-
-                    </p>
-
-                </div>
-
-            `;
-
-
-            found = true;
-
-        }
-
-    }
-
-
-    openApp();
-
-
-    if (found) {
-
-
-        document
-
-            .getElementById("continueCard")
-
-            .innerHTML = message;
-
-    }
-
-}
-
-
-// =====================================
-// LOAD DASHBOARD
+// DASHBOARD
 // =====================================
 
 function loadDashboard() {
 
-
     document
-
         .getElementById("welcomeText")
-
         .innerText =
 
         `Welcome back, ${user.name} 👋`;
 
 
     document
-
         .getElementById("profileName")
-
-        .innerText =
-
-        user.name;
+        .innerText = user.name;
 
 
     document
-
         .getElementById("role")
-
-        .innerText =
-
-        user.role;
+        .innerText = user.role;
 
 
     document
-
         .getElementById("agentMessage")
-
         .innerText =
 
-        `Your AI preparation plan is ready for your goal of becoming a ${user.role}.`;
+        `Hi ${user.name}! 🤖 I recommend starting with Aptitude to build your foundation. You can also practice Technical, Coding, or Mock Interview questions.`;
 
 
     createSkillAnalysis();
 
-
     createRoadmap();
-
 
     updateStats();
 
-
     createContinueCard();
+
+}
+
+
+// =====================================
+// WELCOME BACK
+// =====================================
+
+function showWelcomeBackMessage() {
+
+    setTimeout(function () {
+
+        alert(
+
+            `Welcome back, ${user.name}! 👋\n\nYour progress has been saved. You can continue from where you stopped.`
+
+        );
+
+    }, 500);
 
 }
 
@@ -620,22 +431,14 @@ function loadDashboard() {
 
 function createContinueCard() {
 
-
     let data = getSavedData();
 
-
     let progress = data.progress;
-
 
     let html = "";
 
 
-    for (
-
-        let type in progress
-
-    ) {
-
+    for (let type in progress) {
 
         let item = progress[type];
 
@@ -648,31 +451,21 @@ function createContinueCard() {
 
         ) {
 
-
-            let title =
-
-                type.charAt(0)
-
-                    .toUpperCase() +
-
-                type.slice(1);
-
-
             html += `
 
                 <div class="continue-box">
 
                     <h2>
 
-                        🔄 Continue ${title}
+                        🔄 Continue ${type.toUpperCase()}
 
                     </h2>
 
                     <p>
 
-                        You completed
+                        Completed:
 
-                        ${item.question}/10 questions.
+                        ${item.question} / 10
 
                     </p>
 
@@ -708,9 +501,7 @@ function createContinueCard() {
 
 
     document
-
         .getElementById("continueCard")
-
         .innerHTML = html;
 
 }
@@ -722,35 +513,25 @@ function createContinueCard() {
 
 function startPractice(type) {
 
-
     currentType = type;
 
 
     let data = getSavedData();
 
 
-    let savedProgress =
-
-        data.progress[type];
-
-
-    if (savedProgress) {
-
+    if (data.progress[type]) {
 
         currentQuestion =
 
-            savedProgress.question;
-
+            data.progress[type].question;
 
         score =
 
-            savedProgress.score;
+            data.progress[type].score;
 
     }
 
-
     else {
-
 
         currentQuestion = 0;
 
@@ -760,36 +541,25 @@ function startPractice(type) {
 
 
     document
-
         .getElementById("dashboardSection")
-
         .classList
-
         .add("hidden");
 
 
     document
-
         .getElementById("progressSection")
-
         .classList
-
         .add("hidden");
 
 
     document
-
         .getElementById("practiceSection")
-
         .classList
-
         .remove("hidden");
 
 
     document
-
         .getElementById("practiceTitle")
-
         .innerText =
 
         type.toUpperCase();
@@ -806,42 +576,26 @@ function startPractice(type) {
 
 function loadQuestion() {
 
-
     let questions;
 
 
-    if (
-
-        currentType === "aptitude"
-
-    ) {
+    if (currentType === "aptitude") {
 
         questions = aptitudeQuestions;
 
     }
 
-
-    else if (
-
-        currentType === "technical"
-
-    ) {
+    else if (currentType === "technical") {
 
         questions = technicalQuestions;
 
     }
 
-
-    else if (
-
-        currentType === "coding"
-
-    ) {
+    else if (currentType === "coding") {
 
         questions = codingQuestions;
 
     }
-
 
     else {
 
@@ -850,12 +604,7 @@ function loadQuestion() {
     }
 
 
-    if (
-
-        currentQuestion >= 10
-
-    ) {
-
+    if (currentQuestion >= 10) {
 
         showCompleted();
 
@@ -865,42 +614,31 @@ function loadQuestion() {
 
 
     document
-
         .getElementById("questionNumber")
-
         .innerText =
 
         `Question ${currentQuestion + 1} / 10`;
 
 
     document
-
         .getElementById("questionProgress")
-
         .style.width =
 
         `${((currentQuestion + 1) / 10) * 100}%`;
 
 
     document
-
         .getElementById("feedback")
-
         .innerHTML = "";
 
 
     document
-
         .getElementById("nextButton")
-
         .classList
-
         .add("hidden");
 
 
-    let question =
-
-        questions[currentQuestion];
+    let question = questions[currentQuestion];
 
 
     if (
@@ -911,70 +649,52 @@ function loadQuestion() {
 
     ) {
 
-
         document
-
             .getElementById("questionText")
-
-            .innerText =
-
-            question.question;
+            .innerText = question.question;
 
 
         let html = "";
 
 
-        question.options
+        question.options.forEach(
 
-            .forEach(
+            function (option, index) {
 
-                function(option, index) {
+                html += `
 
+                    <button
 
-                    html += `
+                        class="option"
 
-                        <button
+                        onclick="checkAnswer(${index})">
 
-                            class="option"
+                        ${option}
 
-                            onclick="checkAnswer(${index})">
+                    </button>
 
-                            ${option}
+                `;
 
-                        </button>
+            }
 
-                    `;
-
-                }
-
-            );
+        );
 
 
         document
-
             .getElementById("answerArea")
-
             .innerHTML = html;
 
     }
 
-
     else {
 
-
         document
-
             .getElementById("questionText")
-
-            .innerText =
-
-            question;
+            .innerText = question;
 
 
         document
-
             .getElementById("answerArea")
-
             .innerHTML = `
 
                 <textarea
@@ -1003,11 +723,10 @@ function loadQuestion() {
 
 
 // =====================================
-// CHECK ANSWER
+// CHECK MCQ ANSWER
 // =====================================
 
 function checkAnswer(selected) {
-
 
     let questions =
 
@@ -1025,38 +744,27 @@ function checkAnswer(selected) {
 
     let options =
 
-        document
-
-            .querySelectorAll(".option");
+        document.querySelectorAll(".option");
 
 
-    options
+    options.forEach(
 
-        .forEach(
+        button => {
 
-            button => {
+            button.disabled = true;
 
-                button.disabled = true;
+        }
 
-            }
-
-        );
+    );
 
 
-    if (
-
-        selected === question.answer
-
-    ) {
-
+    if (selected === question.answer) {
 
         score++;
 
 
         options[selected]
-
             .classList
-
             .add("correct");
 
 
@@ -1070,27 +778,21 @@ function checkAnswer(selected) {
 
     }
 
-
     else {
 
-
         options[selected]
-
             .classList
-
             .add("wrong");
 
 
         options[question.answer]
-
             .classList
-
             .add("correct");
 
 
         showFeedback(
 
-            "❌ Incorrect. Keep learning and try again.",
+            "❌ Incorrect. Review this topic and keep practicing.",
 
             false
 
@@ -1103,70 +805,184 @@ function checkAnswer(selected) {
 
 
     document
-
         .getElementById("nextButton")
-
         .classList
-
         .remove("hidden");
 
 }
 
 
 // =====================================
-// TEXT ANSWER
+// TEXT ANSWER CHECK
 // =====================================
 
 function submitTextAnswer() {
 
-
-    let answer =
-
-        document
-
-            .getElementById("userAnswer")
-
-            .value
-
-            .trim();
+    let answer = document
+        .getElementById("userAnswer")
+        .value
+        .trim();
 
 
-    if (!answer) {
+    let words = answer
+        .split(/\s+/)
+        .filter(word => word.length > 0);
 
 
-        alert(
+    if (words.length < 5) {
 
-            "Please write your answer first."
+        showFeedback(
+
+            "⚠️ Your answer is too short. Please provide a complete answer.",
+
+            false
 
         );
-
 
         return;
 
     }
 
 
-    score++;
+    if (currentType === "interview") {
+
+        let lowerAnswer = answer.toLowerCase();
 
 
-    showFeedback(
+        let keywords = [
 
-        "🤖 Good answer! Keep improving your explanation.",
+            "student",
 
-        true
+            "education",
 
-    );
+            "skill",
+
+            "python",
+
+            "sql",
+
+            "project",
+
+            "experience",
+
+            "goal",
+
+            "strength",
+
+            "learn",
+
+            "company",
+
+            "career"
+
+        ];
+
+
+        let foundKeywords = keywords.filter(
+
+            keyword =>
+
+                lowerAnswer.includes(keyword)
+
+        );
+
+
+        if (foundKeywords.length < 2) {
+
+            showFeedback(
+
+                "⚠️ Your answer needs more relevant details. Try to include your education, skills, project, experience, or career goal.",
+
+                false
+
+            );
+
+            return;
+
+        }
+
+
+        score++;
+
+
+        showFeedback(
+
+            "✅ Good answer! Your response contains relevant details.",
+
+            true
+
+        );
+
+    }
+
+
+    else {
+
+        let codingKeywords = [
+
+            "print",
+
+            "if",
+
+            "for",
+
+            "while",
+
+            "def",
+
+            "return",
+
+            "input",
+
+            "int"
+
+        ];
+
+
+        let found = codingKeywords.filter(
+
+            keyword =>
+
+                answer.toLowerCase().includes(keyword)
+
+        );
+
+
+        if (found.length < 1) {
+
+            showFeedback(
+
+                "⚠️ Please write a proper programming solution with logic or code.",
+
+                false
+
+            );
+
+            return;
+
+        }
+
+
+        score++;
+
+
+        showFeedback(
+
+            "✅ Good! Your answer contains programming logic.",
+
+            true
+
+        );
+
+    }
 
 
     saveProgress();
 
 
     document
-
         .getElementById("nextButton")
-
         .classList
-
         .remove("hidden");
 
 }
@@ -1178,7 +994,6 @@ function submitTextAnswer() {
 
 function saveProgress() {
 
-
     let data = getSavedData();
 
 
@@ -1187,11 +1002,11 @@ function saveProgress() {
 
     data.progress[currentType] = {
 
-
         question: currentQuestion + 1,
 
+        score: score,
 
-        score: score
+        completed: false
 
     };
 
@@ -1207,28 +1022,19 @@ function saveProgress() {
 
 function nextQuestion() {
 
-
     currentQuestion++;
 
 
-    if (
-
-        currentQuestion >= 10
-
-    ) {
-
+    if (currentQuestion >= 10) {
 
         let data = getSavedData();
 
 
         data.progress[currentType] = {
 
-
             question: 10,
 
-
             score: score,
-
 
             completed: true
 
@@ -1240,14 +1046,12 @@ function nextQuestion() {
 
         showCompleted();
 
-
         return;
 
     }
 
 
     saveProgress();
-
 
     loadQuestion();
 
@@ -1260,20 +1064,15 @@ function nextQuestion() {
 
 function showCompleted() {
 
-
     document
-
         .getElementById("questionText")
-
         .innerText =
 
         "🎉 Practice Completed!";
 
 
     document
-
         .getElementById("answerArea")
-
         .innerHTML = `
 
             <div class="feedback success">
@@ -1288,7 +1087,7 @@ function showCompleted() {
 
                 <br>
 
-                Great job! Keep preparing for your placement 🚀
+                Great job! Keep preparing 🚀
 
             </div>
 
@@ -1296,18 +1095,8 @@ function showCompleted() {
 
 
     document
-
-        .getElementById("feedback")
-
-        .innerHTML = "";
-
-
-    document
-
         .getElementById("nextButton")
-
         .classList
-
         .add("hidden");
 
 }
@@ -1319,11 +1108,8 @@ function showCompleted() {
 
 function showFeedback(message, success) {
 
-
     document
-
         .getElementById("feedback")
-
         .innerHTML = `
 
             <div class="feedback
@@ -1345,31 +1131,21 @@ function showFeedback(message, success) {
 
 function showDashboard() {
 
-
     document
-
         .getElementById("practiceSection")
-
         .classList
-
         .add("hidden");
 
 
     document
-
         .getElementById("progressSection")
-
         .classList
-
         .add("hidden");
 
 
     document
-
         .getElementById("dashboardSection")
-
         .classList
-
         .remove("hidden");
 
 
@@ -1384,38 +1160,25 @@ function showDashboard() {
 
 function showProgress() {
 
-
     document
-
         .getElementById("dashboardSection")
-
         .classList
-
         .add("hidden");
 
 
     document
-
         .getElementById("practiceSection")
-
         .classList
-
         .add("hidden");
 
 
     document
-
         .getElementById("progressSection")
-
         .classList
-
         .remove("hidden");
 
 
     let data = getSavedData();
-
-
-    let progress = data.progress;
 
 
     let html = "";
@@ -1434,75 +1197,60 @@ function showProgress() {
     ];
 
 
-    types.forEach(
+    types.forEach(function (type) {
 
-        function(type) {
-
-
-            let item =
-
-                progress[type];
+        let item = data.progress[type];
 
 
-            let completed =
+        let completed = item
 
-                item
+            ? item.question
 
-                    ? item.question
-
-                    : 0;
+            : 0;
 
 
-            let score =
+        let currentScore = item
 
-                item
+            ? item.score
 
-                    ? item.score
-
-                    : 0;
+            : 0;
 
 
-            html += `
+        html += `
 
-                <div
+            <div class="progress-item">
 
-                    class="progress-item">
+                <h3>
 
-                    <h3>
+                    ${type.toUpperCase()}
 
-                        ${type.toUpperCase()}
+                </h3>
 
-                    </h3>
+                <p>
 
-                    <p>
+                    Completed:
 
-                        Completed:
+                    ${completed} / 10
 
-                        ${completed} / 10
+                </p>
 
-                    </p>
+                <p>
 
-                    <p>
+                    Score:
 
-                        Score:
+                    ${currentScore}
 
-                        ${score}
+                </p>
 
-                    </p>
+            </div>
 
-                </div>
+        `;
 
-            `;
-
-        }
-
-    );
+    });
 
 
     document
-
         .getElementById("progressContent")
-
         .innerHTML = html;
 
 }
@@ -1514,7 +1262,6 @@ function showProgress() {
 
 function updateStats() {
 
-
     let data = getSavedData();
 
 
@@ -1522,137 +1269,104 @@ function updateStats() {
 
 
     Object
-
         .values(data.progress)
+        .forEach(item => {
 
-        .forEach(
+            total += item.question || 0;
 
-            item => {
+        });
 
-                total +=
 
-                    item.question || 0;
+    let readiness = Math.round(
 
-            }
-
-        );
-
-
-    let readiness =
-
-        Math.round(
-
-            (total / 40) * 100
-
-        );
-
-
-    document
-
-        .getElementById("solved")
-
-        .innerText = total;
-
-
-    document
-
-        .getElementById("readiness")
-
-        .innerText =
-
-        readiness + "%";
-
-}
-
-
-// =====================================
-// SKILLS
-// =====================================
-
-function createSkillAnalysis() {
-
-
-    let skills =
-
-        user.skills.length
-
-            ? user.skills
-
-            : [
-
-                "Python",
-
-                "SQL",
-
-                "Communication"
-
-            ];
-
-
-    let html = "";
-
-
-    skills.forEach(
-
-        function(skill, index) {
-
-
-            let percentage =
-
-                45 + index * 10;
-
-
-            html += `
-
-                <div
-
-                    class="skill-row">
-
-                    <div
-
-                        class="skill-info">
-
-                        <span>
-
-                            ${skill}
-
-                        </span>
-
-                        <b>
-
-                            ${percentage}%
-
-                        </b>
-
-                    </div>
-
-                    <div
-
-                        class="skill-bar">
-
-                        <div
-
-                            class="skill-fill"
-
-                            style="width:${percentage}%">
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }
+        (total / 40) * 100
 
     );
 
 
     document
+        .getElementById("solved")
+        .innerText = total;
 
+
+    document
+        .getElementById("readiness")
+        .innerText = readiness + "%";
+
+}
+
+
+// =====================================
+// SKILL ANALYSIS
+// =====================================
+
+function createSkillAnalysis() {
+
+    let skills = user.skills.length
+
+        ? user.skills
+
+        : [
+
+            "Python",
+
+            "SQL",
+
+            "Communication"
+
+        ];
+
+
+    let html = "";
+
+
+    skills.forEach(function (skill, index) {
+
+        let percentage = 45 + index * 10;
+
+
+        html += `
+
+            <div class="skill-row">
+
+                <div class="skill-info">
+
+                    <span>
+
+                        ${skill}
+
+                    </span>
+
+                    <b>
+
+                        ${percentage}%
+
+                    </b>
+
+                </div>
+
+
+                <div class="skill-bar">
+
+                    <div
+
+                        class="skill-fill"
+
+                        style="width:${percentage}%">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    document
         .getElementById("skillAnalysis")
-
         .innerHTML = html;
 
 }
@@ -1663,7 +1377,6 @@ function createSkillAnalysis() {
 // =====================================
 
 function createRoadmap() {
-
 
     let roadmap = [
 
@@ -1683,55 +1396,217 @@ function createRoadmap() {
     let html = "";
 
 
-    roadmap.forEach(
+    roadmap.forEach(function (item, index) {
 
-        function(item, index) {
+        html += `
 
+            <div class="roadmap-item">
 
-            html += `
+                <div class="roadmap-number">
 
-                <div
-
-                    class="roadmap-item">
-
-                    <div
-
-                        class="roadmap-number">
-
-                        ${index + 1}
-
-                    </div>
-
-                    <div>
-
-                        <b>
-
-                            ${item}
-
-                        </b>
-
-                        <p>
-
-                            AI recommended preparation step.
-
-                        </p>
-
-                    </div>
+                    ${index + 1}
 
                 </div>
 
-            `;
 
-        }
+                <div>
 
-    );
+                    <b>
+
+                        ${item}
+
+                    </b>
+
+                    <p>
+
+                        AI recommended preparation step.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
 
 
     document
-
         .getElementById("roadmap")
-
         .innerHTML = html;
+
+}
+
+
+// =====================================
+// AI ROBOT CHAT
+// =====================================
+
+function sendMessage() {
+
+    let input = document
+        .getElementById("chatInput");
+
+
+    let message = input
+        .value
+        .trim();
+
+
+    if (message === "") {
+
+        return;
+
+    }
+
+
+    let reply = "";
+
+
+    let text = message
+        .toLowerCase();
+
+
+    if (
+
+        text.includes("start") ||
+
+        text.includes("begin") ||
+
+        text.includes("where")
+
+    ) {
+
+        reply = `
+
+            Hi ${user.name}! 👋
+
+            Based on your profile, I recommend starting with
+
+            <b>Aptitude Practice</b>.
+
+            It will help you build your problem-solving foundation.
+
+            🚀 Click Aptitude to begin!
+
+        `;
+
+    }
+
+    else if (
+
+        text.includes("progress") ||
+
+        text.includes("continue")
+
+    ) {
+
+        reply = `
+
+            Your progress is saved automatically 💾
+
+            When you return later, you can continue from where you stopped.
+
+        `;
+
+    }
+
+    else if (
+
+        text.includes("interview")
+
+    ) {
+
+        reply = `
+
+            For interview preparation 🎤,
+
+            answer in complete sentences.
+
+            Include your education, skills, projects,
+
+            strengths and career goals.
+
+        `;
+
+    }
+
+    else if (
+
+        text.includes("aptitude")
+
+    ) {
+
+        reply = `
+
+            Aptitude practice improves your logical thinking
+
+            and problem-solving skills 🧮.
+
+            Start with Aptitude from the sidebar!
+
+        `;
+
+    }
+
+    else if (
+
+        text.includes("technical")
+
+    ) {
+
+        reply = `
+
+            Technical preparation covers Python, SQL,
+
+            HTML, CSS and programming concepts 💻.
+
+        `;
+
+    }
+
+    else {
+
+        reply = `
+
+            I can help you with:
+
+            🧮 Aptitude
+
+            💻 Technical Questions
+
+            ⌨️ Coding
+
+            🎤 Mock Interview
+
+            📊 Progress
+
+            <br><br>
+
+            Ask me:
+
+            <b>"Where should I start?"</b>
+
+        `;
+
+    }
+
+
+    document
+        .getElementById("chatMessages")
+        .innerHTML = `
+
+            <b>You:</b> ${message}
+
+            <br><br>
+
+            <b>🤖 AI Coach:</b> ${reply}
+
+        `;
+
+
+    input.value = "";
 
 }
 
@@ -1742,44 +1617,22 @@ function createRoadmap() {
 
 function resetUser() {
 
-
-    // IMPORTANT:
-
-    // This only removes the current user's data.
-
-    // It does not affect other users.
-
-    localStorage.removeItem(
-
-        getUserKey()
-
-    );
-
-
     location.reload();
 
 }
 
 
 // =====================================
-// INITIAL LOAD
+// START SCREEN
 // =====================================
 
-// Always show the name screen first.
-
 document
-
     .getElementById("setupScreen")
-
     .classList
-
     .remove("hidden");
 
 
 document
-
     .getElementById("app")
-
     .classList
-
     .add("hidden");

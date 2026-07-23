@@ -1,520 +1,959 @@
+// =====================================
+// AI PLACEMENT PREPARATION AGENT
+// =====================================
+
+
+// CURRENT USER
+
 let user = {
+
     name: "",
+
     role: "",
+
     skills: []
+
 };
+
+
+// CURRENT PRACTICE
 
 let currentType = "";
+
 let currentQuestion = 0;
+
 let score = 0;
-let totalSolved = 0;
-
-let progress = {
-    aptitude: 0,
-    technical: 0,
-    coding: 0,
-    interview: 0
-};
 
 
-// ==============================
+// =====================================
 // QUESTIONS
-// ==============================
+// =====================================
+
 
 const aptitudeQuestions = [
 
-{
-    question: "What is 20% of 150?",
-    options: ["20", "30", "40", "50"],
-    answer: 1
-},
+    {
+        question: "What is 20% of 150?",
+        options: ["20", "30", "40", "50"],
+        answer: 1
+    },
 
-{
-    question: "If 5 pens cost ₹50, what is the cost of 1 pen?",
-    options: ["₹5", "₹10", "₹15", "₹20"],
-    answer: 1
-},
+    {
+        question: "If 5 pens cost ₹50, what is the cost of 1 pen?",
+        options: ["₹5", "₹10", "₹15", "₹20"],
+        answer: 1
+    },
 
-{
-    question: "What is the average of 10, 20 and 30?",
-    options: ["15", "20", "25", "30"],
-    answer: 1
-},
+    {
+        question: "What is the average of 10, 20 and 30?",
+        options: ["15", "20", "25", "30"],
+        answer: 1
+    },
 
-{
-    question: "A number increased by 20% and decreased by 20%. What is the final change?",
-    options: ["No change", "4% increase", "4% decrease", "2% decrease"],
-    answer: 2
-},
+    {
+        question: "What is 25% of 200?",
+        options: ["25", "40", "50", "75"],
+        answer: 2
+    },
 
-{
-    question: "What is the next number? 2, 4, 8, 16, ?",
-    options: ["20", "24", "32", "36"],
-    answer: 2
-},
+    {
+        question: "What is 12 × 8?",
+        options: ["86", "96", "108", "112"],
+        answer: 1
+    },
 
-{
-    question: "If a train travels 60 km in 2 hours, what is its speed?",
-    options: ["20 km/h", "30 km/h", "40 km/h", "60 km/h"],
-    answer: 1
-},
+    {
+        question: "What is the next number: 2, 4, 8, 16, ?",
+        options: ["20", "24", "32", "36"],
+        answer: 2
+    },
 
-{
-    question: "What is 25% of 200?",
-    options: ["25", "40", "50", "75"],
-    answer: 2
-},
+    {
+        question: "A train travels 60 km in 2 hours. Speed?",
+        options: ["20 km/h", "30 km/h", "40 km/h", "60 km/h"],
+        answer: 1
+    },
 
-{
-    question: "Find the odd one: Apple, Mango, Carrot, Banana",
-    options: ["Apple", "Mango", "Carrot", "Banana"],
-    answer: 2
-},
+    {
+        question: "Find the odd one: Apple, Mango, Carrot, Banana",
+        options: ["Apple", "Mango", "Carrot", "Banana"],
+        answer: 2
+    },
 
-{
-    question: "What is 12 × 8?",
-    options: ["86", "96", "108", "112"],
-    answer: 1
-},
+    {
+        question: "If today is Monday, after 3 days?",
+        options: ["Tuesday", "Wednesday", "Thursday", "Friday"],
+        answer: 2
+    },
 
-{
-    question: "If today is Monday, what day will it be after 3 days?",
-    options: ["Tuesday", "Wednesday", "Thursday", "Friday"],
-    answer: 2
-}
+    {
+        question: "What is 10 × 10?",
+        options: ["10", "50", "100", "1000"],
+        answer: 2
+    }
 
 ];
 
 
 const technicalQuestions = [
 
-{
-    question: "Which keyword is used to define a function in Python?",
-    options: ["function", "def", "fun", "define"],
-    answer: 1
-},
+    {
+        question: "Which keyword defines a function in Python?",
+        options: ["function", "def", "fun", "define"],
+        answer: 1
+    },
 
-{
-    question: "Which data type is ordered and changeable in Python?",
-    options: ["Tuple", "Set", "List", "String"],
-    answer: 2
-},
+    {
+        question: "Which is ordered and changeable in Python?",
+        options: ["Tuple", "Set", "List", "String"],
+        answer: 2
+    },
 
-{
-    question: "What does SQL stand for?",
-    options: [
-        "Structured Query Language",
-        "Simple Query Language",
-        "System Query Language",
-        "Standard Question Language"
-    ],
-    answer: 0
-},
+    {
+        question: "What does SQL stand for?",
+        options: [
+            "Structured Query Language",
+            "Simple Query Language",
+            "System Query Language",
+            "Standard Question Language"
+        ],
+        answer: 0
+    },
 
-{
-    question: "Which SQL command is used to retrieve data?",
-    options: ["GET", "SELECT", "FETCH", "SHOW"],
-    answer: 1
-},
+    {
+        question: "Which SQL command retrieves data?",
+        options: ["GET", "SELECT", "FETCH", "SHOW"],
+        answer: 1
+    },
 
-{
-    question: "Which symbol is used for comments in Python?",
-    options: ["//", "#", "/*", "--"],
-    answer: 1
-},
+    {
+        question: "Which symbol is used for Python comments?",
+        options: ["//", "#", "/*", "--"],
+        answer: 1
+    },
 
-{
-    question: "Which HTML tag is used to create a paragraph?",
-    options: ["<p>", "<para>", "<text>", "<paragraph>"],
-    answer: 0
-},
+    {
+        question: "Which HTML tag creates a paragraph?",
+        options: ["<p>", "<para>", "<text>", "<paragraph>"],
+        answer: 0
+    },
 
-{
-    question: "Which CSS property changes text color?",
-    options: ["font-color", "text-color", "color", "text-style"],
-    answer: 2
-},
+    {
+        question: "Which CSS property changes text color?",
+        options: [
+            "font-color",
+            "text-color",
+            "color",
+            "text-style"
+        ],
+        answer: 2
+    },
 
-{
-    question: "What is the full form of OOP?",
-    options: [
-        "Object Oriented Programming",
-        "Object Operating Program",
-        "Open Object Programming",
-        "Object Ordered Programming"
-    ],
-    answer: 0
-},
+    {
+        question: "What is OOP?",
+        options: [
+            "Object Oriented Programming",
+            "Object Operating Program",
+            "Open Object Programming",
+            "Object Ordered Programming"
+        ],
+        answer: 0
+    },
 
-{
-    question: "Which data structure follows FIFO?",
-    options: ["Stack", "Queue", "Tree", "Graph"],
-    answer: 1
-},
+    {
+        question: "Which data structure follows FIFO?",
+        options: ["Stack", "Queue", "Tree", "Graph"],
+        answer: 1
+    },
 
-{
-    question: "Which SQL command removes all rows from a table?",
-    options: ["DELETE", "DROP", "TRUNCATE", "REMOVE"],
-    answer: 2
-}
+    {
+        question: "Which command removes all rows?",
+        options: ["DELETE", "DROP", "TRUNCATE", "REMOVE"],
+        answer: 2
+    }
 
 ];
 
 
 const codingQuestions = [
 
-"Write a Python program to check whether a number is even or odd.",
+    "Write a Python program to check even or odd.",
 
-"Write a Python program to find the largest of two numbers.",
+    "Write a Python program to find the largest number.",
 
-"Write a Python program to reverse a string.",
+    "Write a Python program to reverse a string.",
 
-"Write a Python program to check whether a number is prime.",
+    "Write a Python program to check prime number.",
 
-"Write a Python program to find the factorial of a number.",
+    "Write a Python program to find factorial.",
 
-"Write a Python program to find the sum of numbers in a list.",
+    "Write a Python program to find sum of a list.",
 
-"Write a Python program to count vowels in a string.",
+    "Write a Python program to count vowels.",
 
-"Write a Python program to check whether a string is a palindrome.",
+    "Write a Python program to check palindrome.",
 
-"Write a Python program to find the largest number in a list.",
+    "Write a Python program to find largest in a list.",
 
-"Write a Python program to print the Fibonacci series."
+    "Write a Python program for Fibonacci series."
 
 ];
 
 
 const interviewQuestions = [
 
-"Tell me about yourself.",
+    "Tell me about yourself.",
 
-"What are your strengths?",
+    "What are your strengths?",
 
-"What is your weakness?",
+    "What is your weakness?",
 
-"Why should we hire you?",
+    "Why should we hire you?",
 
-"Why do you want to join our company?",
+    "Why do you want to join our company?",
 
-"Where do you see yourself in five years?",
+    "Where do you see yourself in five years?",
 
-"Explain your final year project.",
+    "Explain your final year project.",
 
-"Why did you choose your technical field?",
+    "Why did you choose your technical field?",
 
-"Tell me about a challenge you faced.",
+    "Tell me about a challenge you faced.",
 
-"Do you have any questions for us?"
+    "Do you have any questions for us?"
 
 ];
 
 
-// ==============================
-// SETUP
-// ==============================
+// =====================================
+// USER STORAGE KEY
+// =====================================
 
-document
-    .getElementById("setupForm")
-    .addEventListener("submit", function(event) {
+function getUserKey() {
 
-        event.preventDefault();
+    return "placement_" +
 
-        user.name =
-            document.getElementById("userName").value;
+        user.name
 
-        user.role =
-            document.getElementById("targetRole").value;
+            .trim()
 
-        user.skills =
-            [...document.querySelectorAll(
-                ".skills input:checked"
-            )].map(input => input.value);
+            .toLowerCase()
 
-        localStorage.setItem(
-            "placementUser",
-            JSON.stringify(user)
-        );
-
-        document
-            .getElementById("setupScreen")
-            .classList.add("hidden");
-
-        document
-            .getElementById("app")
-            .classList.remove("hidden");
-
-        loadDashboard();
-
-    });
-
-
-// ==============================
-// LOAD DASHBOARD
-// ==============================
-
-function loadDashboard() {
-
-    document
-        .getElementById("welcomeText")
-        .innerText =
-        `Good morning, ${user.name} 👋`;
-
-    document
-        .getElementById("profileName")
-        .innerText =
-        user.name;
-
-    document
-        .getElementById("role")
-        .innerText =
-        user.role;
-
-    document
-        .getElementById("agentMessage")
-        .innerText =
-        `Based on your selected skills, I created a personalized preparation plan for your goal of becoming a ${user.role}.`;
-
-    createSkillAnalysis();
-
-    createRoadmap();
-
-    updateStats();
+            .replace(/\s+/g, "_");
 
 }
 
 
-// ==============================
-// SKILL ANALYSIS
-// ==============================
+// =====================================
+// GET USER DATA
+// =====================================
 
-function createSkillAnalysis() {
+function getSavedData() {
 
-    let skills =
-        user.skills.length
-        ? user.skills
-        : ["Python", "SQL", "Communication"];
+    return JSON.parse(
 
-    let html = "";
+        localStorage.getItem(
 
-    skills.forEach((skill, index) => {
+            getUserKey()
 
-        let percentage =
-            45 + (index * 10);
+        )
 
-        if (percentage > 85) {
-            percentage = 85;
+    ) || {
+
+        user: user,
+
+        progress: {}
+
+    };
+
+}
+
+
+// =====================================
+// SAVE DATA
+// =====================================
+
+function saveData(data) {
+
+    localStorage.setItem(
+
+        getUserKey(),
+
+        JSON.stringify(data)
+
+    );
+
+}
+
+
+// =====================================
+// SETUP FORM
+// =====================================
+
+document
+
+    .getElementById("setupForm")
+
+    .addEventListener(
+
+        "submit",
+
+        function(event) {
+
+
+            event.preventDefault();
+
+
+            let name =
+
+                document
+
+                    .getElementById("userName")
+
+                    .value
+
+                    .trim();
+
+
+            let role =
+
+                document
+
+                    .getElementById("targetRole")
+
+                    .value;
+
+
+            let skills =
+
+                [
+
+                    ...document
+
+                        .querySelectorAll(
+
+                            ".skills input:checked"
+
+                        )
+
+                ]
+
+                .map(
+
+                    input => input.value
+
+                );
+
+
+            user = {
+
+                name: name,
+
+                role: role,
+
+                skills: skills
+
+            };
+
+
+            let savedData = getSavedData();
+
+
+            // If this is an existing user,
+
+            // preserve old progress.
+
+            if (
+
+                savedData.progress &&
+
+                Object.keys(
+
+                    savedData.progress
+
+                ).length > 0
+
+            ) {
+
+
+                user = savedData.user;
+
+
+                showWelcomeBack();
+
+
+            }
+
+
+            else {
+
+
+                saveData({
+
+                    user: user,
+
+                    progress: {}
+
+                });
+
+
+                openApp();
+
+            }
+
         }
 
-        html += `
+    );
 
-        <div class="skill-row">
 
-            <div class="skill-info">
+// =====================================
+// OPEN APP
+// =====================================
 
-                <span>${skill}</span>
+function openApp() {
 
-                <b>${percentage}%</b>
 
-            </div>
+    document
 
-            <div class="skill-bar">
+        .getElementById("setupScreen")
 
-                <div
-                    class="skill-fill"
-                    style="width:${percentage}%">
+        .classList
+
+        .add("hidden");
+
+
+    document
+
+        .getElementById("app")
+
+        .classList
+
+        .remove("hidden");
+
+
+    loadDashboard();
+
+}
+
+
+// =====================================
+// WELCOME BACK
+// =====================================
+
+function showWelcomeBack() {
+
+
+    let data = getSavedData();
+
+
+    let progress = data.progress;
+
+
+    let message = "";
+
+
+    let found = false;
+
+
+    for (
+
+        let type in progress
+
+    ) {
+
+
+        if (
+
+            progress[type].question > 0 &&
+
+            progress[type].question < 10
+
+        ) {
+
+
+            let displayName =
+
+                type.charAt(0)
+
+                    .toUpperCase() +
+
+                type.slice(1);
+
+
+            message += `
+
+                <div class="continue-box">
+
+                    <h2>
+
+                        Welcome back, ${user.name}! 👋
+
+                    </h2>
+
+                    <p>
+
+                        You completed
+
+                        <b>
+
+                            ${progress[type].question}
+
+                        </b>
+
+                        ${displayName} questions.
+
+                        Your score is
+
+                        <b>
+
+                            ${progress[type].score}
+
+                        </b>.
+
+                    </p>
+
+                    <p>
+
+                        Continue from
+
+                        <b>
+
+                            Question
+
+                            ${progress[type].question + 1}
+
+                        </b>
+
+                        🚀
+
+                    </p>
 
                 </div>
 
-            </div>
+            `;
 
-        </div>
 
-        `;
+            found = true;
 
-    });
+        }
 
-    document
-        .getElementById("skillAnalysis")
-        .innerHTML = html;
+    }
+
+
+    openApp();
+
+
+    if (found) {
+
+
+        document
+
+            .getElementById("continueCard")
+
+            .innerHTML = message;
+
+    }
 
 }
 
 
-// ==============================
-// ROADMAP
-// ==============================
+// =====================================
+// LOAD DASHBOARD
+// =====================================
 
-function createRoadmap() {
+function loadDashboard() {
 
-    let roadmap = [
 
-        "Strengthen your core technical skills",
+    document
 
-        "Practice aptitude and logical reasoning",
+        .getElementById("welcomeText")
 
-        "Solve coding problems regularly",
+        .innerText =
 
-        "Improve SQL and data structures",
+        `Welcome back, ${user.name} 👋`;
 
-        "Complete mock interviews"
 
-    ];
+    document
+
+        .getElementById("profileName")
+
+        .innerText =
+
+        user.name;
+
+
+    document
+
+        .getElementById("role")
+
+        .innerText =
+
+        user.role;
+
+
+    document
+
+        .getElementById("agentMessage")
+
+        .innerText =
+
+        `Your AI preparation plan is ready for your goal of becoming a ${user.role}.`;
+
+
+    createSkillAnalysis();
+
+
+    createRoadmap();
+
+
+    updateStats();
+
+
+    createContinueCard();
+
+}
+
+
+// =====================================
+// CONTINUE CARD
+// =====================================
+
+function createContinueCard() {
+
+
+    let data = getSavedData();
+
+
+    let progress = data.progress;
+
 
     let html = "";
 
-    roadmap.forEach((item, index) => {
 
-        html += `
+    for (
 
-        <div class="roadmap-item">
+        let type in progress
 
-            <div class="roadmap-number">
-                ${index + 1}
-            </div>
+    ) {
 
-            <div>
 
-                <b>${item}</b>
+        let item = progress[type];
 
-                <p>
-                    AI recommended step for your placement preparation.
-                </p>
 
-            </div>
+        if (
 
-        </div>
+            item.question > 0 &&
 
-        `;
+            item.question < 10
 
-    });
+        ) {
+
+
+            let title =
+
+                type.charAt(0)
+
+                    .toUpperCase() +
+
+                type.slice(1);
+
+
+            html += `
+
+                <div class="continue-box">
+
+                    <h2>
+
+                        🔄 Continue ${title}
+
+                    </h2>
+
+                    <p>
+
+                        You completed
+
+                        ${item.question}/10 questions.
+
+                    </p>
+
+                    <p>
+
+                        Score:
+
+                        ${item.score}
+
+                    </p>
+
+                    <button
+
+                        class="primary-btn"
+
+                        onclick="startPractice('${type}')">
+
+                        Continue from Question
+
+                        ${item.question + 1}
+
+                        →
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
 
     document
-        .getElementById("roadmap")
+
+        .getElementById("continueCard")
+
         .innerHTML = html;
 
 }
 
 
-// ==============================
+// =====================================
 // START PRACTICE
-// ==============================
+// =====================================
 
 function startPractice(type) {
 
+
     currentType = type;
 
-    currentQuestion = 0;
 
-    score = 0;
+    let data = getSavedData();
+
+
+    let savedProgress =
+
+        data.progress[type];
+
+
+    if (savedProgress) {
+
+
+        currentQuestion =
+
+            savedProgress.question;
+
+
+        score =
+
+            savedProgress.score;
+
+    }
+
+
+    else {
+
+
+        currentQuestion = 0;
+
+        score = 0;
+
+    }
+
 
     document
+
         .getElementById("dashboardSection")
-        .classList.add("hidden");
+
+        .classList
+
+        .add("hidden");
+
 
     document
+
         .getElementById("progressSection")
-        .classList.add("hidden");
+
+        .classList
+
+        .add("hidden");
+
 
     document
+
         .getElementById("practiceSection")
-        .classList.remove("hidden");
+
+        .classList
+
+        .remove("hidden");
+
+
+    document
+
+        .getElementById("practiceTitle")
+
+        .innerText =
+
+        type.toUpperCase();
+
 
     loadQuestion();
 
 }
 
 
-// ==============================
+// =====================================
 // LOAD QUESTION
-// ==============================
+// =====================================
 
 function loadQuestion() {
 
+
     let questions;
 
-    if (currentType === "aptitude") {
+
+    if (
+
+        currentType === "aptitude"
+
+    ) {
 
         questions = aptitudeQuestions;
 
     }
 
-    if (currentType === "technical") {
+
+    else if (
+
+        currentType === "technical"
+
+    ) {
 
         questions = technicalQuestions;
 
     }
 
-    if (currentType === "coding") {
+
+    else if (
+
+        currentType === "coding"
+
+    ) {
 
         questions = codingQuestions;
 
     }
 
-    if (currentType === "interview") {
+
+    else {
 
         questions = interviewQuestions;
 
     }
 
 
+    if (
+
+        currentQuestion >= 10
+
+    ) {
+
+
+        showCompleted();
+
+        return;
+
+    }
+
+
     document
+
         .getElementById("questionNumber")
+
         .innerText =
+
         `Question ${currentQuestion + 1} / 10`;
 
+
     document
+
         .getElementById("questionProgress")
+
         .style.width =
+
         `${((currentQuestion + 1) / 10) * 100}%`;
 
-    document
-        .getElementById("feedback")
-        .innerHTML = "";
 
     document
+
+        .getElementById("feedback")
+
+        .innerHTML = "";
+
+
+    document
+
         .getElementById("nextButton")
-        .classList.add("hidden");
+
+        .classList
+
+        .add("hidden");
 
 
     let question =
+
         questions[currentQuestion];
 
 
     if (
+
         currentType === "aptitude" ||
+
         currentType === "technical"
+
     ) {
 
+
         document
+
             .getElementById("questionText")
+
             .innerText =
+
             question.question;
+
 
         let html = "";
 
-        question.options.forEach(
-            (option, index) => {
 
-                html += `
+        question.options
 
-                <button
-                    class="option"
-                    onclick="checkAnswer(${index})">
+            .forEach(
 
-                    ${option}
+                function(option, index) {
 
-                </button>
 
-                `;
+                    html += `
 
-            }
+                        <button
 
-        );
+                            class="option"
+
+                            onclick="checkAnswer(${index})">
+
+                            ${option}
+
+                        </button>
+
+                    `;
+
+                }
+
+            );
+
 
         document
+
             .getElementById("answerArea")
+
             .innerHTML = html;
 
     }
@@ -522,28 +961,39 @@ function loadQuestion() {
 
     else {
 
+
         document
+
             .getElementById("questionText")
+
             .innerText =
+
             question;
 
+
         document
+
             .getElementById("answerArea")
+
             .innerHTML = `
 
-            <textarea
-                id="userAnswer"
-                placeholder="Write your answer here...">
+                <textarea
 
-            </textarea>
+                    id="userAnswer"
 
-            <button
-                class="primary-btn"
-                onclick="submitTextAnswer()">
+                    placeholder="Write your answer here...">
 
-                🤖 Get AI Feedback
+                </textarea>
 
-            </button>
+                <button
+
+                    class="primary-btn"
+
+                    onclick="submitTextAnswer()">
+
+                    Submit Answer 🤖
+
+                </button>
 
             `;
 
@@ -552,407 +1002,784 @@ function loadQuestion() {
 }
 
 
-// ==============================
-// CHECK MCQ ANSWER
-// ==============================
+// =====================================
+// CHECK ANSWER
+// =====================================
 
 function checkAnswer(selected) {
 
+
     let questions =
+
         currentType === "aptitude"
-        ? aptitudeQuestions
-        : technicalQuestions;
+
+            ? aptitudeQuestions
+
+            : technicalQuestions;
+
 
     let question =
+
         questions[currentQuestion];
 
+
     let options =
-        document.querySelectorAll(".option");
 
-    options.forEach(
-        button => button.disabled = true
-    );
+        document
+
+            .querySelectorAll(".option");
 
 
-    if (selected === question.answer) {
+    options
+
+        .forEach(
+
+            button => {
+
+                button.disabled = true;
+
+            }
+
+        );
+
+
+    if (
+
+        selected === question.answer
+
+    ) {
+
 
         score++;
 
+
         options[selected]
-            .classList.add("correct");
+
+            .classList
+
+            .add("correct");
+
 
         showFeedback(
-            "✅ Correct! Great job.",
+
+            "✅ Correct! Excellent work.",
+
             true
+
         );
 
     }
+
 
     else {
 
+
         options[selected]
-            .classList.add("wrong");
+
+            .classList
+
+            .add("wrong");
+
 
         options[question.answer]
-            .classList.add("correct");
+
+            .classList
+
+            .add("correct");
+
 
         showFeedback(
-            "❌ Incorrect. Review this topic and try again.",
+
+            "❌ Incorrect. Keep learning and try again.",
+
             false
+
         );
 
     }
 
+
+    saveProgress();
+
+
     document
+
         .getElementById("nextButton")
-        .classList.remove("hidden");
+
+        .classList
+
+        .remove("hidden");
 
 }
 
 
-// ==============================
+// =====================================
 // TEXT ANSWER
-// ==============================
+// =====================================
 
 function submitTextAnswer() {
 
+
     let answer =
+
         document
-        .getElementById("userAnswer")
-        .value
-        .trim();
+
+            .getElementById("userAnswer")
+
+            .value
+
+            .trim();
+
 
     if (!answer) {
 
-        showFeedback(
-            "🤖 Please write your answer first.",
-            false
+
+        alert(
+
+            "Please write your answer first."
+
         );
+
 
         return;
 
     }
 
+
     score++;
+
 
     showFeedback(
 
-        `🤖 AI Feedback:
-
-        <br><br>
-
-        Good attempt!
-
-        <br><br>
-
-        Try to include clear examples and explain your answer confidently.
-
-        `,
+        "🤖 Good answer! Keep improving your explanation.",
 
         true
 
     );
 
+
+    saveProgress();
+
+
     document
+
         .getElementById("nextButton")
-        .classList.remove("hidden");
+
+        .classList
+
+        .remove("hidden");
 
 }
 
 
-// ==============================
+// =====================================
+// SAVE PROGRESS
+// =====================================
+
+function saveProgress() {
+
+
+    let data = getSavedData();
+
+
+    data.user = user;
+
+
+    data.progress[currentType] = {
+
+
+        question: currentQuestion + 1,
+
+
+        score: score
+
+    };
+
+
+    saveData(data);
+
+}
+
+
+// =====================================
 // NEXT QUESTION
-// ==============================
+// =====================================
 
 function nextQuestion() {
 
+
     currentQuestion++;
 
-    if (currentQuestion >= 10) {
 
-        finishPractice();
+    if (
+
+        currentQuestion >= 10
+
+    ) {
+
+
+        let data = getSavedData();
+
+
+        data.progress[currentType] = {
+
+
+            question: 10,
+
+
+            score: score,
+
+
+            completed: true
+
+        };
+
+
+        saveData(data);
+
+
+        showCompleted();
+
 
         return;
 
     }
+
+
+    saveProgress();
+
 
     loadQuestion();
 
 }
 
 
-// ==============================
-// FINISH
-// ==============================
+// =====================================
+// COMPLETED
+// =====================================
 
-function finishPractice() {
-
-    progress[currentType] = score;
-
-    totalSolved += 10;
-
-    localStorage.setItem(
-        "placementProgress",
-        JSON.stringify(progress)
-    );
-
-    updateStats();
+function showCompleted() {
 
 
     document
+
         .getElementById("questionText")
-        .innerHTML =
-        `🎉 ${currentType.toUpperCase()} COMPLETED`;
+
+        .innerText =
+
+        "🎉 Practice Completed!";
+
 
     document
+
         .getElementById("answerArea")
+
         .innerHTML = `
 
-        <div class="feedback success">
+            <div class="feedback success">
 
-            <h2>
-                Your Score: ${score} / 10
-            </h2>
+                <h2>
 
-            <br>
+                    Your Score:
 
-            ${getPerformanceMessage(score)}
+                    ${score} / 10
 
-        </div>
+                </h2>
+
+                <br>
+
+                Great job! Keep preparing for your placement 🚀
+
+            </div>
 
         `;
 
+
     document
+
         .getElementById("feedback")
+
         .innerHTML = "";
 
+
     document
+
         .getElementById("nextButton")
-        .classList.add("hidden");
+
+        .classList
+
+        .add("hidden");
 
 }
 
 
-function getPerformanceMessage(score) {
-
-    if (score >= 8) {
-
-        return "🌟 Excellent performance! Keep practicing.";
-
-    }
-
-    if (score >= 5) {
-
-        return "👍 Good performance. Continue improving.";
-
-    }
-
-    return "💪 Keep practicing. You can improve with consistency.";
-
-}
-
-
-// ==============================
+// =====================================
 // FEEDBACK
-// ==============================
+// =====================================
 
 function showFeedback(message, success) {
 
+
     document
+
         .getElementById("feedback")
+
         .innerHTML = `
 
-        <div class="feedback ${success ? "success" : "error"}">
+            <div class="feedback
 
-            ${message}
+                ${success ? "success" : "error"}">
 
-        </div>
+                ${message}
+
+            </div>
 
         `;
 
 }
 
 
-// ==============================
+// =====================================
 // DASHBOARD
-// ==============================
+// =====================================
 
 function showDashboard() {
 
+
     document
+
         .getElementById("practiceSection")
-        .classList.add("hidden");
+
+        .classList
+
+        .add("hidden");
+
 
     document
+
         .getElementById("progressSection")
-        .classList.add("hidden");
+
+        .classList
+
+        .add("hidden");
+
 
     document
+
         .getElementById("dashboardSection")
-        .classList.remove("hidden");
 
-}
+        .classList
 
+        .remove("hidden");
 
-// ==============================
-// PROGRESS
-// ==============================
-
-function showProgress() {
-
-    document
-        .getElementById("dashboardSection")
-        .classList.add("hidden");
-
-    document
-        .getElementById("practiceSection")
-        .classList.add("hidden");
-
-    document
-        .getElementById("progressSection")
-        .classList.remove("hidden");
-
-
-    let html = "";
-
-    Object.keys(progress).forEach(type => {
-
-        html += `
-
-        <p>
-
-            ${type.toUpperCase()} :
-
-            <b>${progress[type]} / 10</b>
-
-        </p>
-
-        `;
-
-    });
-
-
-    document
-        .getElementById("progressContent")
-        .innerHTML = html;
-
-}
-
-
-// ==============================
-// UPDATE STATS
-// ==============================
-
-function updateStats() {
-
-    let total =
-
-        progress.aptitude +
-
-        progress.technical +
-
-        progress.coding +
-
-        progress.interview;
-
-
-    let readiness =
-        Math.min(
-            Math.round((total / 40) * 100),
-            100
-        );
-
-
-    document
-        .getElementById("readiness")
-        .innerText =
-        readiness + "%";
-
-
-    document
-        .getElementById("solved")
-        .innerText =
-        total;
-
-
-}
-
-
-// ==============================
-// AI RECOMMENDATION
-// ==============================
-
-function showRecommendation() {
-
-    let weakest =
-        Object.keys(progress)
-        .sort(
-            (a, b) =>
-            progress[a] - progress[b]
-        )[0];
-
-    alert(
-
-        `🤖 AI Recommendation:
-
-Focus more on ${weakest} practice.
-
-Your AI agent recommends completing
-10 questions in this area next.`
-
-    );
-
-}
-
-
-// ==============================
-// CHANGE PROFILE
-// ==============================
-
-function resetUser() {
-
-    localStorage.clear();
-
-    location.reload();
-
-}
-
-
-// ==============================
-// LOAD SAVED USER
-// ==============================
-
-let savedUser =
-    localStorage.getItem("placementUser");
-
-
-if (savedUser) {
-
-    user =
-        JSON.parse(savedUser);
-
-    document
-        .getElementById("setupScreen")
-        .classList.add("hidden");
-
-    document
-        .getElementById("app")
-        .classList.remove("hidden");
 
     loadDashboard();
 
 }
 
 
-let savedProgress =
-    localStorage.getItem(
-        "placementProgress"
+// =====================================
+// PROGRESS
+// =====================================
+
+function showProgress() {
+
+
+    document
+
+        .getElementById("dashboardSection")
+
+        .classList
+
+        .add("hidden");
+
+
+    document
+
+        .getElementById("practiceSection")
+
+        .classList
+
+        .add("hidden");
+
+
+    document
+
+        .getElementById("progressSection")
+
+        .classList
+
+        .remove("hidden");
+
+
+    let data = getSavedData();
+
+
+    let progress = data.progress;
+
+
+    let html = "";
+
+
+    let types = [
+
+        "aptitude",
+
+        "technical",
+
+        "coding",
+
+        "interview"
+
+    ];
+
+
+    types.forEach(
+
+        function(type) {
+
+
+            let item =
+
+                progress[type];
+
+
+            let completed =
+
+                item
+
+                    ? item.question
+
+                    : 0;
+
+
+            let score =
+
+                item
+
+                    ? item.score
+
+                    : 0;
+
+
+            html += `
+
+                <div
+
+                    class="progress-item">
+
+                    <h3>
+
+                        ${type.toUpperCase()}
+
+                    </h3>
+
+                    <p>
+
+                        Completed:
+
+                        ${completed} / 10
+
+                    </p>
+
+                    <p>
+
+                        Score:
+
+                        ${score}
+
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
     );
 
 
-if (savedProgress) {
+    document
 
-    progress =
-        JSON.parse(savedProgress);
+        .getElementById("progressContent")
 
-              }
+        .innerHTML = html;
+
+}
+
+
+// =====================================
+// STATS
+// =====================================
+
+function updateStats() {
+
+
+    let data = getSavedData();
+
+
+    let total = 0;
+
+
+    Object
+
+        .values(data.progress)
+
+        .forEach(
+
+            item => {
+
+                total +=
+
+                    item.question || 0;
+
+            }
+
+        );
+
+
+    let readiness =
+
+        Math.round(
+
+            (total / 40) * 100
+
+        );
+
+
+    document
+
+        .getElementById("solved")
+
+        .innerText = total;
+
+
+    document
+
+        .getElementById("readiness")
+
+        .innerText =
+
+        readiness + "%";
+
+}
+
+
+// =====================================
+// SKILLS
+// =====================================
+
+function createSkillAnalysis() {
+
+
+    let skills =
+
+        user.skills.length
+
+            ? user.skills
+
+            : [
+
+                "Python",
+
+                "SQL",
+
+                "Communication"
+
+            ];
+
+
+    let html = "";
+
+
+    skills.forEach(
+
+        function(skill, index) {
+
+
+            let percentage =
+
+                45 + index * 10;
+
+
+            html += `
+
+                <div
+
+                    class="skill-row">
+
+                    <div
+
+                        class="skill-info">
+
+                        <span>
+
+                            ${skill}
+
+                        </span>
+
+                        <b>
+
+                            ${percentage}%
+
+                        </b>
+
+                    </div>
+
+                    <div
+
+                        class="skill-bar">
+
+                        <div
+
+                            class="skill-fill"
+
+                            style="width:${percentage}%">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+    );
+
+
+    document
+
+        .getElementById("skillAnalysis")
+
+        .innerHTML = html;
+
+}
+
+
+// =====================================
+// ROADMAP
+// =====================================
+
+function createRoadmap() {
+
+
+    let roadmap = [
+
+        "Build strong programming fundamentals",
+
+        "Practice aptitude and reasoning",
+
+        "Improve technical knowledge",
+
+        "Solve coding problems",
+
+        "Practice mock interviews"
+
+    ];
+
+
+    let html = "";
+
+
+    roadmap.forEach(
+
+        function(item, index) {
+
+
+            html += `
+
+                <div
+
+                    class="roadmap-item">
+
+                    <div
+
+                        class="roadmap-number">
+
+                        ${index + 1}
+
+                    </div>
+
+                    <div>
+
+                        <b>
+
+                            ${item}
+
+                        </b>
+
+                        <p>
+
+                            AI recommended preparation step.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+    );
+
+
+    document
+
+        .getElementById("roadmap")
+
+        .innerHTML = html;
+
+}
+
+
+// =====================================
+// CHANGE USER
+// =====================================
+
+function resetUser() {
+
+
+    // IMPORTANT:
+
+    // This only removes the current user's data.
+
+    // It does not affect other users.
+
+    localStorage.removeItem(
+
+        getUserKey()
+
+    );
+
+
+    location.reload();
+
+}
+
+
+// =====================================
+// INITIAL LOAD
+// =====================================
+
+// Always show the name screen first.
+
+document
+
+    .getElementById("setupScreen")
+
+    .classList
+
+    .remove("hidden");
+
+
+document
+
+    .getElementById("app")
+
+    .classList
+
+    .add("hidden");

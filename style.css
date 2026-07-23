@@ -1,7 +1,11 @@
 * {
+
     margin: 0;
+
     padding: 0;
+
     box-sizing: border-box;
+
 }
 
 
@@ -22,7 +26,9 @@ body {
 
 
 .hidden {
+
     display: none !important;
+
 }
 
 
@@ -397,7 +403,12 @@ textarea {
 
     box-shadow:
         0 5px 20px
-        rgba(0, 0, 0, 0.06);
+        rgba(
+            0,
+            0,
+            0,
+            0.06
+        );
 
 }
 
@@ -429,7 +440,7 @@ textarea {
 
 /* CONTINUE */
 
-.continue-card {
+#continueCard {
 
     margin: 25px 0;
 
@@ -495,7 +506,12 @@ textarea {
 
     box-shadow:
         0 5px 20px
-        rgba(0, 0, 0, 0.06);
+        rgba(
+            0,
+            0,
+            0,
+            0.06
+        );
 
 }
 
@@ -503,6 +519,44 @@ textarea {
 .section-card h2 {
 
     margin-bottom: 20px;
+
+}
+
+
+/* CHAT */
+
+.chat-messages {
+
+    line-height: 1.6;
+
+}
+
+
+.chat-box {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+}
+
+
+.chat-box input {
+
+    flex: 1;
+
+}
+
+
+.chat-box button {
+
+    width: auto;
+
+    margin: 0;
+
+    padding: 12px 25px;
 
 }
 
@@ -608,7 +662,12 @@ textarea {
 
     box-shadow:
         0 10px 30px
-        rgba(0, 0, 0, 0.08);
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
 
 }
 
@@ -824,35 +883,19 @@ textarea {
         gap: 20px;
 
     }
-    /* AI CHAT */
-
-.chat-box {
-
-    display: flex;
-
-    gap: 10px;
-
-    margin-top: 20px;
-
-}
 
 
-.chat-box input {
+    .chat-box {
 
-    flex: 1;
+        flex-direction: column;
 
-}
-
-
-.chat-box button {
-
-    width: auto;
-
-    margin: 0;
-
-    padding: 12px 25px;
-
-}
+    }
 
 
-        }
+    .chat-box button {
+
+        width: 100%;
+
+    }
+
+    }

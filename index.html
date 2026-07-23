@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>AI Placement Preparation Agent</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="style.css">
 </head>
 
 <body>
 
     <!-- SETUP SCREEN -->
 
-    <section id="setupScreen" class="setup-screen">
+    <section id="setupScreen"
+        class="setup-screen">
 
         <div class="setup-card">
 
@@ -22,7 +27,7 @@
             <h1>AI Placement Preparation Agent</h1>
 
             <p>
-                Your personalized AI companion for placement preparation.
+                Your personalized AI-powered placement preparation companion.
             </p>
 
             <form id="setupForm">
@@ -33,63 +38,102 @@
                     type="text"
                     id="userName"
                     placeholder="Enter your name"
-                    required
-                >
+                    required>
 
-                <label>Target Job Role</label>
 
-                <select id="targetRole" required>
+                <label>Target Role</label>
+
+                <select id="targetRole"
+                    required>
 
                     <option value="">
                         Select your target role
                     </option>
 
-                    <option>Python Developer</option>
-                    <option>Java Developer</option>
-                    <option>Full Stack Developer</option>
-                    <option>Data Analyst</option>
-                    <option>Software Developer</option>
+                    <option>
+                        Software Developer
+                    </option>
+
+                    <option>
+                        Python Developer
+                    </option>
+
+                    <option>
+                        Full Stack Developer
+                    </option>
+
+                    <option>
+                        Data Analyst
+                    </option>
+
+                    <option>
+                        Software Tester
+                    </option>
 
                 </select>
 
-                <label>Your Skills</label>
+
+                <label>Select Your Skills</label>
 
                 <div class="skills">
 
                     <label>
-                        <input type="checkbox" value="Python">
+                        <input
+                            type="checkbox"
+                            value="Python">
+
                         Python
                     </label>
 
                     <label>
-                        <input type="checkbox" value="Java">
-                        Java
-                    </label>
+                        <input
+                            type="checkbox"
+                            value="C">
 
-                    <label>
-                        <input type="checkbox" value="C">
                         C
                     </label>
 
                     <label>
-                        <input type="checkbox" value="SQL">
+                        <input
+                            type="checkbox"
+                            value="SQL">
+
                         SQL
                     </label>
 
                     <label>
-                        <input type="checkbox" value="HTML & CSS">
-                        HTML & CSS
+                        <input
+                            type="checkbox"
+                            value="HTML">
+
+                        HTML
                     </label>
 
                     <label>
-                        <input type="checkbox" value="JavaScript">
+                        <input
+                            type="checkbox"
+                            value="CSS">
+
+                        CSS
+                    </label>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            value="JavaScript">
+
                         JavaScript
                     </label>
 
                 </div>
 
-                <button type="submit" class="primary-btn">
+
+                <button
+                    class="primary-btn"
+                    type="submit">
+
                     Start My Preparation 🚀
+
                 </button>
 
             </form>
@@ -101,7 +145,8 @@
 
     <!-- MAIN APPLICATION -->
 
-    <div id="app" class="app hidden">
+    <main id="app"
+        class="hidden">
 
         <!-- SIDEBAR -->
 
@@ -109,44 +154,69 @@
 
             <div class="brand">
 
-                <div class="brand-icon">
-                    🤖
-                </div>
+                🤖
 
-                <div>
-                    <h2>Placement AI</h2>
-                    <small>Preparation Agent</small>
-                </div>
+                <span>
+                    Placement AI
+                </span>
 
             </div>
 
 
-            <button class="nav active" onclick="showDashboard()">
-                📊 Dashboard
+            <button
+                onclick="showDashboard()">
+
+                🏠 Dashboard
+
             </button>
 
-            <button class="nav" onclick="startPractice('aptitude')">
+
+            <button
+                onclick="startPractice('aptitude')">
+
                 🧮 Aptitude
+
             </button>
 
-            <button class="nav" onclick="startPractice('technical')">
+
+            <button
+                onclick="startPractice('technical')">
+
                 💻 Technical
+
             </button>
 
-            <button class="nav" onclick="startPractice('coding')">
+
+            <button
+                onclick="startPractice('coding')">
+
                 ⌨️ Coding
+
             </button>
 
-            <button class="nav" onclick="startPractice('interview')">
+
+            <button
+                onclick="startPractice('interview')">
+
                 🎤 Mock Interview
+
             </button>
 
-            <button class="nav" onclick="showProgress()">
-                📈 My Progress
+
+            <button
+                onclick="showProgress()">
+
+                📊 My Progress
+
             </button>
 
-            <button class="nav" onclick="resetUser()">
-                🔄 Change Profile
+
+            <button
+                onclick="resetUser()"
+                class="logout-btn">
+
+                🔄 Change User
+
             </button>
 
         </aside>
@@ -154,242 +224,245 @@
 
         <!-- CONTENT -->
 
-        <main class="main">
-
-            <header class="topbar">
-
-                <div>
-
-                    <h1 id="welcomeText">
-                        Welcome 👋
-                    </h1>
-
-                    <p>
-                        Your AI-powered placement preparation dashboard
-                    </p>
-
-                </div>
-
-                <div class="user-badge">
-                    👤 <span id="profileName"></span>
-                </div>
-
-            </header>
+        <section class="content">
 
 
             <!-- DASHBOARD -->
 
-            <section id="dashboardSection">
+            <section
+                id="dashboardSection">
 
-                <div class="agent-banner">
+                <div class="topbar">
 
                     <div>
 
-                        <span>✨ PERSONALIZED AI AGENT</span>
+                        <p class="small-text">
+                            AI PLACEMENT PREPARATION
+                        </p>
+
+                        <h1
+                            id="welcomeText">
+
+                            Welcome 👋
+
+                        </h1>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="hero-card">
+
+                    <div>
 
                         <h2>
-                            Your preparation plan is ready.
+                            Your AI Career Coach 🤖
                         </h2>
 
-                        <p id="agentMessage">
-                            Your AI agent analyzed your profile.
+                        <p
+                            id="agentMessage">
+
+                            Your personalized preparation journey starts here.
                         </p>
 
                     </div>
 
-                    <button
-                        class="white-btn"
-                        onclick="showRecommendation()">
+                    <div
+                        class="robot">
 
-                        Ask AI Agent →
-
-                    </button>
-
-                </div>
-
-
-                <div class="stats">
-
-                    <div class="stat">
-
-                        <span>🎯 Readiness</span>
-
-                        <h2 id="readiness">0%</h2>
-
-                        <p>Based on your practice</p>
-
-                    </div>
-
-
-                    <div class="stat">
-
-                        <span>🔥 Practice Streak</span>
-
-                        <h2 id="streak">0</h2>
-
-                        <p>Days completed</p>
-
-                    </div>
-
-
-                    <div class="stat">
-
-                        <span>✅ Questions Solved</span>
-
-                        <h2 id="solved">0</h2>
-
-                        <p>Keep learning</p>
-
-                    </div>
-
-
-                    <div class="stat">
-
-                        <span>💼 Target Role</span>
-
-                        <h2 id="role">-</h2>
-
-                        <p>Your career goal</p>
+                        🚀
 
                     </div>
 
                 </div>
 
 
-                <div class="dashboard-grid">
+                <!-- STATS -->
 
+                <div
+                    class="stats-grid">
 
-                    <div class="card">
+                    <div
+                        class="stat-card">
 
-                        <h2>🧠 AI Skill Analysis</h2>
+                        <span>
+                            🎯
+                        </span>
 
-                        <div id="skillAnalysis"></div>
+                        <h3
+                            id="readiness">
+
+                            0%
+
+                        </h3>
+
+                        <p>
+                            Readiness
+                        </p>
 
                     </div>
 
 
-                    <div class="card">
+                    <div
+                        class="stat-card">
 
-                        <h2>🗺️ Personalized Roadmap</h2>
+                        <span>
+                            📝
+                        </span>
 
-                        <div id="roadmap"></div>
+                        <h3
+                            id="solved">
+
+                            0
+
+                        </h3>
+
+                        <p>
+                            Questions Solved
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="stat-card">
+
+                        <span>
+                            👤
+                        </span>
+
+                        <h3
+                            id="profileName">
+
+                            -
+
+                        </h3>
+
+                        <p
+                            id="role">
+
+                            -
+
+                        </p>
 
                     </div>
 
                 </div>
 
 
-                <div class="card">
+                <!-- CONTINUE CARD -->
 
-                    <h2>🚀 Practice Center</h2>
+                <div
+                    id="continueCard"
+                    class="continue-card">
 
-                    <div class="practice-grid">
-
-                        <div class="practice-card">
-
-                            <div>🧮</div>
-
-                            <h3>Aptitude</h3>
-
-                            <p>10 placement aptitude questions.</p>
-
-                            <button onclick="startPractice('aptitude')">
-                                Start →
-                            </button>
-
-                        </div>
+                </div>
 
 
-                        <div class="practice-card">
+                <!-- SKILLS -->
 
-                            <div>💻</div>
+                <div
+                    class="section-card">
 
-                            <h3>Technical</h3>
+                    <h2>
+                        🧠 Skill Analysis
+                    </h2>
 
-                            <p>10 technical interview questions.</p>
-
-                            <button onclick="startPractice('technical')">
-                                Start →
-                            </button>
-
-                        </div>
-
-
-                        <div class="practice-card">
-
-                            <div>⌨️</div>
-
-                            <h3>Coding</h3>
-
-                            <p>10 coding problems to practice.</p>
-
-                            <button onclick="startPractice('coding')">
-                                Start →
-                            </button>
-
-                        </div>
-
-
-                        <div class="practice-card">
-
-                            <div>🎤</div>
-
-                            <h3>Mock Interview</h3>
-
-                            <p>10 real interview questions.</p>
-
-                            <button onclick="startPractice('interview')">
-                                Start →
-                            </button>
-
-                        </div>
+                    <div
+                        id="skillAnalysis">
 
                     </div>
+
+                </div>
+
+
+                <!-- ROADMAP -->
+
+                <div
+                    class="section-card">
+
+                    <h2>
+                        🗺️ AI Recommended Roadmap
+                    </h2>
+
+                    <div
+                        id="roadmap">
+
+                        </div>
 
                 </div>
 
             </section>
 
 
-            <!-- PRACTICE SECTION -->
+            <!-- PRACTICE -->
 
-            <section id="practiceSection" class="hidden">
-
-                <div class="practice-header">
-
-                    <button onclick="showDashboard()">
-                        ← Dashboard
-                    </button>
-
-                    <h2 id="practiceTitle">
-                        Practice
-                    </h2>
-
-                    <span id="questionNumber">
-                        Question 1 / 10
-                    </span>
-
-                </div>
+            <section
+                id="practiceSection"
+                class="hidden">
 
 
-                <div class="question-card">
+                <button
+                    class="back-btn"
+                    onclick="showDashboard()">
 
-                    <div class="question-progress">
+                    ← Back to Dashboard
 
-                        <div id="questionProgress"></div>
+                </button>
+
+
+                <div
+                    class="practice-card">
+
+                    <div
+                        class="practice-header">
+
+                        <h2
+                            id="practiceTitle">
+
+                            Practice
+
+                        </h2>
+
+                        <span
+                            id="questionNumber">
+
+                            Question 1 / 10
+
+                        </span>
 
                     </div>
 
 
-                    <h2 id="questionText">
-                        Question
+                    <div
+                        class="progress-bar">
+
+                        <div
+                            id="questionProgress">
+
+                        </div>
+
+                    </div>
+
+
+                    <h2
+                        id="questionText">
+
                     </h2>
 
 
-                    <div id="answerArea"></div>
+                    <div
+                        id="answerArea">
+
+                    </div>
 
 
-                    <div id="feedback"></div>
+                    <div
+                        id="feedback">
+
+                    </div>
 
 
                     <button
@@ -408,24 +481,47 @@
 
             <!-- PROGRESS -->
 
-            <section id="progressSection" class="hidden">
+            <section
+                id="progressSection"
+                class="hidden">
 
-                <div class="card">
 
-                    <h2>📈 My Progress</h2>
+                <button
+                    class="back-btn"
+                    onclick="showDashboard()">
 
-                    <div id="progressContent"></div>
+                    ← Back to Dashboard
+
+                </button>
+
+
+                <div
+                    class="section-card">
+
+                    <h1>
+                        📊 My Preparation Progress
+                    </h1>
+
+
+                    <div
+                        id="progressContent">
+
+                    </div>
 
                 </div>
 
             </section>
 
-        </main>
+        </section>
 
-    </div>
+    </main>
 
 
-    <script src="script.js"></script>
+    <script
+        src="script.js">
+
+    </script>
 
 </body>
-                        </html>
+
+    </html>

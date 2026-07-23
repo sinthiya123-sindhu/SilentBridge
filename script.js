@@ -1,273 +1,797 @@
-// ==========================================
-// SILENTBRIDGE AI SIGN LANGUAGE DEMO
-// ==========================================
+// ===============================
+// MODAL FUNCTIONS
+// ===============================
 
-let cameraStream = null;
-let handLandmarker = null;
-let lastVideoTime = -1;
-let currentMessage = "";
-let detecting = false;
+const modal =
+    document.getElementById("modal");
 
-function startCommunication() {
-    document.getElementById("communication").scrollIntoView({ behavior: "smooth" });
+const modalTitle =
+    document.getElementById("modal-title");
+
+const modalContent =
+    document.getElementById("modal-content");
+
+
+function openModal(title, content) {
+
+    modalTitle.innerText = title;
+
+    modalContent.innerHTML = content;
+
+    modal.style.display = "flex";
+
 }
 
-// ==========================================
-// START CAMERA
-// ==========================================
 
-async function startCamera() {
-    const video = document.getElementById("cameraVideo");
-    const message = document.getElementById("cameraMessage");
-    const status = document.getElementById("cameraStatus");
+function closeModal() {
 
-    try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            status.innerText = "Camera not supported by this browser ❌";
-            return;
-        }
+    modal.style.display = "none";
 
-        cameraStream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "user" },
-            audio: false
-        });
-
-        video.srcObject = cameraStream;
-        video.style.display = "block";
-        message.style.display = "none";
-        status.innerText = "Camera active 🎥 Loading AI model...";
-
-        await video.play();
-        await createHandLandmarker();
-
-        status.innerText = "AI ready — show your hand 🤟";
-        detecting = true;
-        detectHands();
-
-    } catch (error) {
-        console.error("Camera/AI Error:", error);
-
-        if (error.name === "NotAllowedError") {
-            status.innerText = "Camera permission denied ❌";
-        } else if (error.name === "NotFoundError") {
-            status.innerText = "No camera found on this device ❌";
-        } else {
-            status.innerText = "AI failed to load: " + error.message;
-        }
-    }
 }
 
-// ==========================================
-// CREATE MEDIAPIPE HAND LANDMARKER
-// ==========================================
 
-async function createHandLandmarker() {
-    if (handLandmarker) return;
+window.onclick = function(event) {
 
-    if (!window.FilesetResolver || !window.HandLandmarker) {
-        throw new Error("MediaPipe module script hasn't loaded yet — check your internet connection.");
+    if (event.target === modal) {
+
+        closeModal();
+
     }
 
-    const vision = await window.FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm"
+};
+
+
+// ===============================
+// AI AGENT
+// ===============================
+
+function openAgent() {
+
+    openModal(
+
+        "🤖 Ask CareerPilot AI",
+
+        `
+
+        <p>
+
+        Hi Sindhu! I analyzed your current preparation.
+        What would you like to know?
+
+        </p>
+
+
+        <br>
+
+
+        <div class="question">
+
+
+            <h3>
+                Select an option
+            </h3>
+
+
+            <button class="option"
+                onclick="agentReply('focus')">
+
+                🎯 What should I focus on today?
+
+            </button>
+
+
+            <button class="option"
+                onclick="agentReply('skill')">
+
+                📊 Analyze my skill gap
+
+            </button>
+
+
+            <button class="option"
+                onclick="agentReply('plan')">
+
+                🗺️ Create my preparation plan
+
+            </button>
+
+
+            <div id="agent-reply">
+
+            </div>
+
+
+        </div>
+
+        `
+
     );
 
-    handLandmarker = await window.HandLandmarker.createFromOptions(vision, {
-        baseOptions: {
-            modelAssetPath:
-                "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
-        },
-        runningMode: "VIDEO",
-        numHands: 1,
-        minHandDetectionConfidence: 0.5,
-        minHandPresenceConfidence: 0.5,
-        minTrackingConfidence: 0.5
-    });
 }
 
-// ==========================================
-// DETECT HANDS
-// ==========================================
 
-function detectHands() {
-    if (!detecting) return;
+function agentReply(type) {
 
-    const video = document.getElementById("cameraVideo");
+    let reply = "";
 
-    if (video.readyState >= 2 && video.currentTime !== lastVideoTime) {
-        lastVideoTime = video.currentTime;
 
-        const results = handLandmarker.detectForVideo(video, performance.now());
+    if (type === "focus") {
 
-        if (results.landmarks && results.landmarks.length > 0) {
-            const landmarks = results.landmarks[0];
-            recognizeGesture(landmarks);
-            drawLandmarks(landmarks);
-        } else {
-            document.getElementById("cameraStatus").innerText =
-                "Show your hand in front of the camera 🤟";
-            clearCanvas();
-        }
+        reply = `
+
+        🎯 Based on your current performance,
+        focus on SQL today.
+
+        <br><br>
+
+        Your SQL skill is 55%.
+        Complete 5 SQL questions and review
+        JOIN operations.
+
+        `;
+
     }
 
-    requestAnimationFrame(detectHands);
+
+    if (type === "skill") {
+
+        reply = `
+
+        📊 Your strongest skill is Python at 82%.
+
+        <br><br>
+
+        Your biggest improvement areas are:
+
+        <br>
+
+        • Data Structures - 42%
+
+        <br>
+
+        • SQL - 55%
+
+        <br><br>
+
+        I recommend improving SQL first.
+
+        `;
+
+    }
+
+
+    if (type === "plan") {
+
+        reply = `
+
+        🗺️ Your AI preparation plan:
+
+        <br><br>
+
+        Week 1: SQL Fundamentals
+
+        <br>
+
+        Week 2: Data Structures
+
+        <br>
+
+        Week 3: Coding Practice
+
+        <br>
+
+        Week 4: Mock Interviews
+
+        `;
+
+    }
+
+
+    document.getElementById(
+
+        "agent-reply"
+
+    ).innerHTML = `
+
+        <div class="ai-response">
+
+            <strong>
+                🤖 CareerPilot AI
+            </strong>
+
+            <br><br>
+
+            ${reply}
+
+        </div>
+
+    `;
+
 }
 
-// ==========================================
-// RECOGNIZE SIMPLE GESTURES
-// ==========================================
 
-function recognizeGesture(landmarks) {
-    const thumbTip = landmarks[4];
-    const indexTip = landmarks[8];
-    const middleTip = landmarks[12];
-    const ringTip = landmarks[16];
-    const pinkyTip = landmarks[20];
-    const wrist = landmarks[0];
+// ===============================
+// PRACTICE
+// ===============================
 
-    let message = "";
+function openPractice(type) {
+
+
+    if (type === "aptitude") {
+
+        openModal(
+
+            "🧮 Aptitude Practice",
+
+            `
+
+            <div class="question">
+
+                <h3>
+
+                If a number is increased by 20%
+                and then decreased by 20%,
+                what is the final change?
+
+                </h3>
+
+
+                <button class="option"
+                    onclick="checkAnswer(this, false)">
+
+                    A. No Change
+
+                </button>
+
+
+                <button class="option"
+                    onclick="checkAnswer(this, false)">
+
+                    B. 4% Increase
+
+                </button>
+
+
+                <button class="option"
+                    onclick="checkAnswer(this, true)">
+
+                    C. 4% Decrease
+
+                </button>
+
+
+                <button class="option"
+                    onclick="checkAnswer(this, false)">
+
+                    D. 2% Decrease
+
+                </button>
+
+
+                <div id="answer">
+
+                </div>
+
+            </div>
+
+            `
+
+        );
+
+    }
+
+
+    if (type === "technical") {
+
+        openModal(
+
+            "💻 Technical Practice",
+
+            `
+
+            <div class="question">
+
+                <h3>
+
+                Which Python data type is
+                ordered and changeable?
+
+                </h3>
+
+
+                <button class="option"
+                    onclick="checkAnswer(this, true)">
+
+                    A. List
+
+                </button>
+
+
+                <button class="option"
+                    onclick="checkAnswer(this, false)">
+
+                    B. Tuple
+
+                </button>
+
+
+                <button class="option"
+                    onclick="checkAnswer(this, false)">
+
+                    C. Set
+
+                </button>
+
+
+                <button class="option"
+                    onclick="checkAnswer(this, false)">
+
+                    D. Frozen Set
+
+                </button>
+
+
+                <div id="answer">
+
+                </div>
+
+            </div>
+
+            `
+
+        );
+
+    }
+
+
+    if (type === "coding") {
+
+        openModal(
+
+            "⌨️ Coding Practice",
+
+            `
+
+            <div class="question">
+
+                <h3>
+
+                Write a Python program to check
+                whether a number is even or odd.
+
+                </h3>
+
+
+                <textarea
+
+                    id="code-input"
+
+                    placeholder="Write your Python code here...">
+
+                </textarea>
+
+
+                <button class="purple-button"
+
+                    onclick="reviewCode()">
+
+                    🤖 Ask AI to Review
+
+                </button>
+
+
+                <div id="code-result">
+
+                </div>
+
+            </div>
+
+            `
+
+        );
+
+    }
+
+
+    if (type === "interview") {
+
+        openModal(
+
+            "🎤 AI Mock Interview",
+
+            `
+
+            <div class="question">
+
+                <h3>
+
+                Tell me about yourself.
+
+                </h3>
+
+
+                <textarea
+
+                    id="interview-input"
+
+                    placeholder="Type your answer here...">
+
+                </textarea>
+
+
+                <button class="purple-button"
+
+                    onclick="reviewInterview()">
+
+                    🤖 Get AI Feedback
+
+                </button>
+
+
+                <div id="interview-result">
+
+                </div>
+
+            </div>
+
+            `
+
+        );
+
+    }
+
+}
+
+
+// ===============================
+// CHECK ANSWER
+// ===============================
+
+function checkAnswer(button, correct) {
+
+
+    const answer =
+
+        document.getElementById("answer");
+
+
+    if (correct) {
+
+        answer.innerHTML = `
+
+            <div class="ai-response">
+
+                ✅ Correct!
+
+                <br><br>
+
+                Excellent work.
+                Keep practicing to improve
+                your placement readiness.
+
+            </div>
+
+        `;
+
+        button.style.borderColor =
+
+            "#49b878";
+
+    }
+
+    else {
+
+        answer.innerHTML = `
+
+            <div class="ai-response">
+
+                ❌ Not quite.
+
+                <br><br>
+
+                🤖 AI Hint:
+                Try calculating the percentage
+                step by step.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ===============================
+// CODE REVIEW
+// ===============================
+
+function reviewCode() {
+
+
+    const code =
+
+        document.getElementById(
+
+            "code-input"
+
+        ).value;
+
+
+    const result =
+
+        document.getElementById(
+
+            "code-result"
+
+        );
+
+
+    if (code.trim() === "") {
+
+        result.innerHTML = `
+
+            <div class="ai-response">
+
+                🤖 Please write your code first.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
 
     if (
-        thumbTip.y < wrist.y &&
-        indexTip.y > wrist.y &&
-        middleTip.y > wrist.y &&
-        ringTip.y > wrist.y &&
-        pinkyTip.y > wrist.y
+
+        code.includes("if") &&
+
+        code.includes("%")
+
     ) {
-        message = "Yes 👍";
-    } else if (
-        indexTip.y < wrist.y &&
-        middleTip.y < wrist.y &&
-        ringTip.y < wrist.y &&
-        pinkyTip.y < wrist.y
-    ) {
-        message = "Hello 👋";
-    } else if (
-        indexTip.y > wrist.y &&
-        middleTip.y > wrist.y &&
-        ringTip.y > wrist.y &&
-        pinkyTip.y > wrist.y
-    ) {
-        message = "Stop ✊";
+
+        result.innerHTML = `
+
+            <div class="ai-response">
+
+                🤖 AI Review:
+
+                <br><br>
+
+                ✅ Your approach looks correct.
+
+                <br><br>
+
+                💡 Tip:
+                Use int() to convert
+                user input into a number.
+
+            </div>
+
+        `;
+
     }
 
-    if (message !== "") {
-        updateResult(message);
-    }
-}
+    else {
 
-// ==========================================
-// UPDATE RESULT
-// ==========================================
+        result.innerHTML = `
 
-function updateResult(message) {
-    currentMessage = message;
-    document.getElementById("resultText").innerText = message;
-    document.getElementById("detectedText").innerText = message;
-    document.getElementById("cameraStatus").innerText = "AI detected: " + message;
-}
+            <div class="ai-response">
 
-// ==========================================
-// DRAW HAND LANDMARKS (mirror-corrected)
-// ==========================================
+                🤖 Try using the modulo operator %
 
-function drawLandmarks(landmarks) {
-    const video = document.getElementById("cameraVideo");
-    const canvas = document.getElementById("handCanvas");
-    const ctx = canvas.getContext("2d");
+                to check whether the remainder is 0.
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+            </div>
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+        `;
 
-    for (const point of landmarks) {
-        const x = (1 - point.x) * canvas.width;
-        const y = point.y * canvas.height;
-
-        ctx.beginPath();
-        ctx.arc(x, y, 6, 0, 2 * Math.PI);
-        ctx.fillStyle = "#ffffff";
-        ctx.fill();
-    }
-}
-
-function clearCanvas() {
-    const canvas = document.getElementById("handCanvas");
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-// ==========================================
-// STOP CAMERA
-// ==========================================
-
-function stopCamera() {
-    detecting = false;
-
-    if (cameraStream) {
-        cameraStream.getTracks().forEach(track => track.stop());
-        cameraStream = null;
     }
 
-    const video = document.getElementById("cameraVideo");
-    const message = document.getElementById("cameraMessage");
-
-    video.srcObject = null;
-    video.style.display = "none";
-    message.style.display = "block";
-
-    document.getElementById("cameraStatus").innerText = "Camera stopped";
-    clearCanvas();
 }
 
-// ==========================================
-// HERO CAMERA
-// ==========================================
 
-async function startHeroCamera() {
-    const video = document.getElementById("heroVideo");
-    const message = document.getElementById("heroCameraMessage");
+// ===============================
+// INTERVIEW REVIEW
+// ===============================
 
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: false
-        });
-        video.srcObject = stream;
-        video.style.display = "block";
-        message.style.display = "none";
-    } catch (error) {
-        console.error("Hero camera error:", error);
-    }
-}
+function reviewInterview() {
 
-// ==========================================
-// TEXT TO SPEECH
-// ==========================================
 
-function speakText() {
-    if (!currentMessage) {
-        document.getElementById("cameraStatus").innerText = "Show a hand gesture first 🤟";
+    const answer =
+
+        document.getElementById(
+
+            "interview-input"
+
+        ).value;
+
+
+    const result =
+
+        document.getElementById(
+
+            "interview-result"
+
+        );
+
+
+    if (answer.trim() === "") {
+
+        result.innerHTML = `
+
+            <div class="ai-response">
+
+                🤖 Please write your answer first.
+
+            </div>
+
+        `;
+
         return;
+
     }
-    const speech = new SpeechSynthesisUtterance(currentMessage);
-    speech.lang = "en-US";
-    window.speechSynthesis.speak(speech);
+
+
+    result.innerHTML = `
+
+        <div class="ai-response">
+
+            🤖 AI Interview Feedback:
+
+            <br><br>
+
+            ✅ Good attempt!
+
+            <br><br>
+
+            Include these points:
+
+            <br>
+
+            • Your education
+
+            <br>
+
+            • Your technical skills
+
+            <br>
+
+            • Your project
+
+            <br>
+
+            • Your career goal
+
+            <br><br>
+
+            ⭐ Recommended structure:
+
+            Present → Skills → Project → Goal
+
+        </div>
+
+    `;
+
 }
 
-function detectSign(message) {
-    updateResult(message);
+
+// ===============================
+// PROFILE
+// ===============================
+
+function showProfile() {
+
+
+    openModal(
+
+        "👤 My Profile",
+
+        `
+
+        <div class="question">
+
+            <h3>
+                Student Profile
+            </h3>
+
+            <br>
+
+            👤 Name: Sindhu
+
+            <br><br>
+
+            🎓 Status: Final Year Student
+
+            <br><br>
+
+            💼 Target Role: Python Developer
+
+            <br><br>
+
+            🐍 Primary Skill: Python
+
+            <br><br>
+
+            🎯 Readiness: 68%
+
+        </div>
+
+        `
+
+    );
+
 }
 
-function changeMode(mode, selectedButton) {
-    document.querySelectorAll(".mode-buttons button").forEach(b => b.classList.remove("active"));
-    selectedButton.classList.add("active");
 
-    const result = document.getElementById("resultText");
-    result.innerText = mode === "sign" ? "Show your hand to begin 🤟" : "Voice mode selected 🎤";
+// ===============================
+// PROGRESS
+// ===============================
+
+function showProgress() {
+
+
+    openModal(
+
+        "📊 My Progress",
+
+        `
+
+        <div class="question">
+
+            <h3>
+                Your Preparation Progress
+            </h3>
+
+            <br>
+
+            🎯 Placement Readiness: 68%
+
+            <br><br>
+
+            🔥 Current Streak: 7 Days
+
+            <br><br>
+
+            ✅ Questions Solved: 124
+
+            <br><br>
+
+            💻 Coding Problems: 32
+
+            <br><br>
+
+            🎤 Mock Interviews: 5
+
+        </div>
+
+        `
+
+    );
+
 }
 
-function scrollToSection(sectionId) {
-    document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
-                }
+
+// ===============================
+// MENU SECTION
+// ===============================
+
+function showSection(section, button) {
+
+
+    document
+
+        .querySelectorAll(".menu-item")
+
+        .forEach(item => {
+
+            item.classList.remove("active");
+
+        });
+
+
+    button.classList.add("active");
+
+            }

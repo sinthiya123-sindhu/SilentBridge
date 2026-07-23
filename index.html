@@ -2,38 +2,31 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AI Placement Preparation Agent</title>
 
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-
-    <!-- ================= SETUP SCREEN ================= -->
+    <!-- ============================= -->
+    <!-- SETUP SCREEN -->
+    <!-- ============================= -->
 
     <section id="setupScreen" class="setup-screen">
 
         <div class="setup-card">
 
-            <div class="logo">🤖</div>
-
-            <h1>AI Placement Preparation Agent</h1>
+            <h1>🤖 AI Placement Agent</h1>
 
             <p>
-                Your personalized AI-powered placement preparation companion.
+                Prepare smarter. Practice better. Get placement ready.
             </p>
 
-
             <form id="setupForm">
-
 
                 <label for="userName">
                     Your Name
@@ -46,22 +39,14 @@
                     required
                 >
 
-
                 <label for="targetRole">
                     Target Role
                 </label>
 
-                <select
-                    id="targetRole"
-                    required
-                >
+                <select id="targetRole" required>
 
                     <option value="">
                         Select your target role
-                    </option>
-
-                    <option value="Software Developer">
-                        Software Developer
                     </option>
 
                     <option value="Python Developer">
@@ -76,8 +61,8 @@
                         Data Analyst
                     </option>
 
-                    <option value="Software Tester">
-                        Software Tester
+                    <option value="Software Developer">
+                        Software Developer
                     </option>
 
                 </select>
@@ -87,94 +72,67 @@
                     Select Your Skills
                 </label>
 
-
                 <div class="skills">
 
-
                     <label>
-
                         <input
                             type="checkbox"
                             value="Python"
                         >
-
                         Python
-
                     </label>
 
-
                     <label>
-
-                        <input
-                            type="checkbox"
-                            value="C"
-                        >
-
-                        C
-
-                    </label>
-
-
-                    <label>
-
                         <input
                             type="checkbox"
                             value="SQL"
                         >
-
                         SQL
-
                     </label>
 
-
                     <label>
-
                         <input
                             type="checkbox"
                             value="HTML"
                         >
-
                         HTML
-
                     </label>
 
-
                     <label>
-
                         <input
                             type="checkbox"
                             value="CSS"
                         >
-
                         CSS
-
                     </label>
 
-
                     <label>
-
                         <input
                             type="checkbox"
                             value="JavaScript"
                         >
-
                         JavaScript
-
                     </label>
 
+                    <label>
+                        <input
+                            type="checkbox"
+                            value="Communication"
+                        >
+                        Communication
+                    </label>
 
                 </div>
 
 
                 <button
-                    class="primary-btn"
                     type="submit"
+                    class="primary-btn"
                 >
 
-                    Start My Preparation 🚀
+                    Start Preparation 🚀
 
                 </button>
-
 
             </form>
 
@@ -183,161 +141,221 @@
     </section>
 
 
-    <!-- ================= MAIN APP ================= -->
+    <!-- ============================= -->
+    <!-- MAIN APPLICATION -->
+    <!-- ============================= -->
 
-    <main
-        id="app"
-        class="hidden"
-    >
+    <section id="app" class="app hidden">
 
 
-        <!-- ================= SIDEBAR ================= -->
+        <!-- ============================= -->
+        <!-- SIDEBAR -->
+        <!-- ============================= -->
 
         <aside class="sidebar">
 
-
-            <div class="brand">
+            <div class="logo">
 
                 🤖
 
                 <span>
-                    Placement AI
+                    Placement Agent
                 </span>
 
             </div>
 
 
+            <nav>
+
+                <button
+                    onclick="showDashboard()"
+                >
+
+                    🏠 Dashboard
+
+                </button>
+
+
+                <button
+                    onclick="startPractice('aptitude')"
+                >
+
+                    🧮 Aptitude
+
+                </button>
+
+
+                <button
+                    onclick="startPractice('technical')"
+                >
+
+                    💻 Technical
+
+                </button>
+
+
+                <button
+                    onclick="startPractice('coding')"
+                >
+
+                    ⌨️ Coding
+
+                </button>
+
+
+                <button
+                    onclick="startPractice('interview')"
+                >
+
+                    🎤 Mock Interview
+
+                </button>
+
+
+                <button
+                    onclick="showProgress()"
+                >
+
+                    📊 Progress
+
+                </button>
+
+            </nav>
+
+
             <button
-                onclick="showDashboard()"
-            >
-
-                🏠 Dashboard
-
-            </button>
-
-
-            <button
-                onclick="startPractice('aptitude')"
-            >
-
-                🧮 Aptitude
-
-            </button>
-
-
-            <button
-                onclick="startPractice('technical')"
-            >
-
-                💻 Technical
-
-            </button>
-
-
-            <button
-                onclick="startPractice('coding')"
-            >
-
-                ⌨️ Coding
-
-            </button>
-
-
-            <button
-                onclick="startPractice('interview')"
-            >
-
-                🎤 Mock Interview
-
-            </button>
-
-
-            <button
-                onclick="showProgress()"
-            >
-
-                📊 My Progress
-
-            </button>
-
-
-            <button
-                onclick="resetUser()"
                 class="logout-btn"
+                onclick="resetUser()"
             >
 
                 🔄 Change User
 
             </button>
 
-
         </aside>
 
 
-        <!-- ================= CONTENT ================= -->
+        <!-- ============================= -->
+        <!-- MAIN CONTENT -->
+        <!-- ============================= -->
 
-        <section class="content">
+        <main class="main-content">
 
 
-            <!-- ================= DASHBOARD ================= -->
+            <!-- ============================= -->
+            <!-- DASHBOARD -->
+            <!-- ============================= -->
 
             <section
                 id="dashboardSection"
+                class="dashboard-section"
             >
 
 
-                <div class="topbar">
-
-
-                    <p class="small-text">
-
-                        AI PLACEMENT PREPARATION
-
-                    </p>
-
-
-                    <h1
-                        id="welcomeText"
-                    >
-
-                        Welcome 👋
-
-                    </h1>
-
-
-                </div>
-
-
-                <!-- HERO -->
-
-                <div class="hero-card">
-
+                <div class="top-bar">
 
                     <div>
 
+                        <h1 id="welcomeText">
+                            Welcome 👋
+                        </h1>
 
-                        <h2>
-
-                            Your AI Career Coach 🤖
-
-                        </h2>
-
-
-                        <p
-                            id="agentMessage"
-                        >
-
-                            Your personalized preparation journey starts here.
-
+                        <p>
+                            Your personalized placement preparation dashboard
                         </p>
-
 
                     </div>
 
 
-                    <div class="robot">
+                    <div class="profile-card">
 
-                        🚀
+                        <div class="profile-icon">
+                            👤
+                        </div>
+
+                        <div>
+
+                            <strong id="profileName">
+                                User
+                            </strong>
+
+                            <span id="role">
+                                Student
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- STATS -->
+                <!-- ============================= -->
+
+                <div class="stats-grid">
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            📝
+                        </div>
+
+                        <div>
+
+                            <h3 id="solved">
+                                0
+                            </h3>
+
+                            <p>
+                                Questions Solved
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🎯
+                        </div>
+
+                        <div>
+
+                            <h3 id="readiness">
+                                0%
+                            </h3>
+
+                            <p>
+                                Placement Readiness
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🚀
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                4
+                            </h3>
+
+                            <p>
+                                Practice Areas
+                            </p>
+
+                        </div>
 
                     </div>
 
@@ -345,15 +363,70 @@
                 </div>
 
 
-                <!-- AI CHAT -->
+                <!-- ============================= -->
+                <!-- AI MESSAGE -->
+                <!-- ============================= -->
 
-                <div class="section-card">
-
+                <div class="agent-card">
 
                     <h2>
+                        🤖 AI Placement Coach
+                    </h2>
 
-                        🤖 Ask Your AI Placement Coach
+                    <p id="agentMessage">
+                        Your AI coach is ready to help you.
+                    </p>
 
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- CONTINUE CARD -->
+                <!-- ============================= -->
+
+                <div id="continueCard"></div>
+
+
+                <!-- ============================= -->
+                <!-- SKILL ANALYSIS -->
+                <!-- ============================= -->
+
+                <div class="dashboard-grid">
+
+
+                    <div class="dashboard-card">
+
+                        <h2>
+                            📈 Skill Analysis
+                        </h2>
+
+                        <div id="skillAnalysis"></div>
+
+                    </div>
+
+
+                    <div class="dashboard-card">
+
+                        <h2>
+                            🗺️ Preparation Roadmap
+                        </h2>
+
+                        <div id="roadmap"></div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- AI CHAT -->
+                <!-- ============================= -->
+
+                <div class="chat-card">
+
+                    <h2>
+                        💬 Talk with AI Coach
                     </h2>
 
 
@@ -362,188 +435,31 @@
                         class="chat-messages"
                     >
 
-                        Hi! I am your AI Placement Coach.
-                        Ask me where to start!
+                        <p>
+                            🤖 Hi! Ask me anything about your placement preparation.
+                        </p>
 
                     </div>
 
 
-                    <div class="chat-box">
-
+                    <div class="chat-input-area">
 
                         <input
                             type="text"
                             id="chatInput"
-                            placeholder="Ask me anything..."
+                            placeholder="Ask me: Where should I start?"
                         >
 
 
                         <button
-                            class="primary-btn"
                             onclick="sendMessage()"
                         >
 
-                            Ask 🤖
+                            Send 🚀
 
                         </button>
 
-
                     </div>
-
-
-                </div>
-
-
-                <!-- STATS -->
-
-                <div class="stats-grid">
-
-
-                    <div class="stat-card">
-
-
-                        <span>
-
-                            🎯
-
-                        </span>
-
-
-                        <h3
-                            id="readiness"
-                        >
-
-                            0%
-
-                        </h3>
-
-
-                        <p>
-
-                            Readiness
-
-                        </p>
-
-
-                    </div>
-
-
-                    <div class="stat-card">
-
-
-                        <span>
-
-                            📝
-
-                        </span>
-
-
-                        <h3
-                            id="solved"
-                        >
-
-                            0
-
-                        </h3>
-
-
-                        <p>
-
-                            Questions Solved
-
-                        </p>
-
-
-                    </div>
-
-
-                    <div class="stat-card">
-
-
-                        <span>
-
-                            👤
-
-                        </span>
-
-
-                        <h3
-                            id="profileName"
-                        >
-
-                            -
-
-                        </h3>
-
-
-                        <p
-                            id="role"
-                        >
-
-                            -
-
-                        </p>
-
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- CONTINUE -->
-
-                <div
-                    id="continueCard"
-                >
-
-                </div>
-
-
-                <!-- SKILL ANALYSIS -->
-
-                <div
-                    class="section-card"
-                >
-
-
-                    <h2>
-
-                        🧠 Skill Analysis
-
-                    </h2>
-
-
-                    <div
-                        id="skillAnalysis"
-                    >
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- ROADMAP -->
-
-                <div
-                    class="section-card"
-                >
-
-
-                    <h2>
-
-                        🗺️ AI Recommended Roadmap
-
-                    </h2>
-
-
-                    <div
-                        id="roadmap"
-                    >
-
-                    </div>
-
 
                 </div>
 
@@ -551,79 +467,69 @@
             </section>
 
 
-            <!-- ================= PRACTICE ================= -->
+            <!-- ============================= -->
+            <!-- PRACTICE SECTION -->
+            <!-- ============================= -->
 
             <section
                 id="practiceSection"
-                class="hidden"
+                class="practice-section hidden"
             >
 
 
-                <button
-                    class="back-btn"
-                    onclick="showDashboard()"
-                >
+                <div class="practice-header">
 
-                    ← Back to Dashboard
-
-                </button>
-
-
-                <div
-                    class="practice-card"
-                >
-
-
-                    <div
-                        class="practice-header"
+                    <button
+                        onclick="showDashboard()"
+                        class="back-btn"
                     >
 
+                        ← Dashboard
 
-                        <h2
-                            id="practiceTitle"
-                        >
-
-                            Practice
-
-                        </h2>
+                    </button>
 
 
-                        <span
-                            id="questionNumber"
-                        >
+                    <h1 id="practiceTitle">
+                        PRACTICE
+                    </h1>
 
+                </div>
+
+
+                <div class="question-card">
+
+
+                    <div class="question-top">
+
+                        <span id="questionNumber">
                             Question 1 / 10
-
                         </span>
-
 
                     </div>
 
 
-                    <div
-                        class="progress-bar"
-                    >
-
+                    <div class="progress-container">
 
                         <div
                             id="questionProgress"
+                            class="question-progress"
                         >
 
                         </div>
 
-
                     </div>
 
 
-                    <h2
-                        id="questionText"
-                    >
+                    <h2 id="questionText">
+
+                        Question will appear here
 
                     </h2>
 
 
                     <div
                         id="answerArea"
+                        class="answer-area"
                     >
 
                     </div>
@@ -642,15 +548,4 @@
                         onclick="nextQuestion()"
                     >
 
-                        Next Question →
-
-                    </button>
-
-
-                </div>
-
-
-            </section>
-
-
-            <!-- =================
+                        Next Question

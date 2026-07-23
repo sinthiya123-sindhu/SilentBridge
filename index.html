@@ -2,15 +2,20 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>AI Placement Preparation Agent</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
+
 
     <!-- ================= SETUP SCREEN ================= -->
 
@@ -26,9 +31,13 @@
                 Your personalized AI-powered placement preparation companion.
             </p>
 
+
             <form id="setupForm">
 
-                <label for="userName">Your Name</label>
+
+                <label for="userName">
+                    Your Name
+                </label>
 
                 <input
                     type="text"
@@ -38,9 +47,14 @@
                 >
 
 
-                <label for="targetRole">Target Role</label>
+                <label for="targetRole">
+                    Target Role
+                </label>
 
-                <select id="targetRole" required>
+                <select
+                    id="targetRole"
+                    required
+                >
 
                     <option value="">
                         Select your target role
@@ -69,39 +83,85 @@
                 </select>
 
 
-                <label>Select Your Skills</label>
+                <label>
+                    Select Your Skills
+                </label>
+
 
                 <div class="skills">
 
+
                     <label>
-                        <input type="checkbox" value="Python">
+
+                        <input
+                            type="checkbox"
+                            value="Python"
+                        >
+
                         Python
+
                     </label>
 
+
                     <label>
-                        <input type="checkbox" value="C">
+
+                        <input
+                            type="checkbox"
+                            value="C"
+                        >
+
                         C
+
                     </label>
 
+
                     <label>
-                        <input type="checkbox" value="SQL">
+
+                        <input
+                            type="checkbox"
+                            value="SQL"
+                        >
+
                         SQL
+
                     </label>
 
+
                     <label>
-                        <input type="checkbox" value="HTML">
+
+                        <input
+                            type="checkbox"
+                            value="HTML"
+                        >
+
                         HTML
+
                     </label>
 
+
                     <label>
-                        <input type="checkbox" value="CSS">
+
+                        <input
+                            type="checkbox"
+                            value="CSS"
+                        >
+
                         CSS
+
                     </label>
 
+
                     <label>
-                        <input type="checkbox" value="JavaScript">
+
+                        <input
+                            type="checkbox"
+                            value="JavaScript"
+                        >
+
                         JavaScript
+
                     </label>
+
 
                 </div>
 
@@ -115,6 +175,7 @@
 
                 </button>
 
+
             </form>
 
         </div>
@@ -122,14 +183,18 @@
     </section>
 
 
-    <!-- ================= MAIN APPLICATION ================= -->
+    <!-- ================= MAIN APP ================= -->
 
-    <main id="app" class="hidden">
+    <main
+        id="app"
+        class="hidden"
+    >
 
 
         <!-- ================= SIDEBAR ================= -->
 
         <aside class="sidebar">
+
 
             <div class="brand">
 
@@ -142,42 +207,54 @@
             </div>
 
 
-            <button onclick="showDashboard()">
+            <button
+                onclick="showDashboard()"
+            >
 
                 🏠 Dashboard
 
             </button>
 
 
-            <button onclick="startPractice('aptitude')">
+            <button
+                onclick="startPractice('aptitude')"
+            >
 
                 🧮 Aptitude
 
             </button>
 
 
-            <button onclick="startPractice('technical')">
+            <button
+                onclick="startPractice('technical')"
+            >
 
                 💻 Technical
 
             </button>
 
 
-            <button onclick="startPractice('coding')">
+            <button
+                onclick="startPractice('coding')"
+            >
 
                 ⌨️ Coding
 
             </button>
 
 
-            <button onclick="startPractice('interview')">
+            <button
+                onclick="startPractice('interview')"
+            >
 
                 🎤 Mock Interview
 
             </button>
 
 
-            <button onclick="showProgress()">
+            <button
+                onclick="showProgress()"
+            >
 
                 📊 My Progress
 
@@ -193,6 +270,7 @@
 
             </button>
 
+
         </aside>
 
 
@@ -203,38 +281,40 @@
 
             <!-- ================= DASHBOARD ================= -->
 
-            <section id="dashboardSection">
+            <section
+                id="dashboardSection"
+            >
 
-
-                <!-- TOP BAR -->
 
                 <div class="topbar">
 
-                    <div>
 
-                        <p class="small-text">
+                    <p class="small-text">
 
-                            AI PLACEMENT PREPARATION
+                        AI PLACEMENT PREPARATION
 
-                        </p>
+                    </p>
 
 
-                        <h1 id="welcomeText">
+                    <h1
+                        id="welcomeText"
+                    >
 
-                            Welcome 👋
+                        Welcome 👋
 
-                        </h1>
+                    </h1>
 
-                    </div>
 
                 </div>
 
 
-                <!-- HERO CARD -->
+                <!-- HERO -->
 
                 <div class="hero-card">
 
+
                     <div>
+
 
                         <h2>
 
@@ -243,11 +323,14 @@
                         </h2>
 
 
-                        <p id="agentMessage">
+                        <p
+                            id="agentMessage"
+                        >
 
                             Your personalized preparation journey starts here.
 
                         </p>
+
 
                     </div>
 
@@ -258,12 +341,14 @@
 
                     </div>
 
+
                 </div>
 
 
-                <!-- ================= AI CHAT ================= -->
+                <!-- AI CHAT -->
 
                 <div class="section-card">
+
 
                     <h2>
 
@@ -272,15 +357,19 @@
                     </h2>
 
 
-                    <p id="chatMessages">
+                    <div
+                        id="chatMessages"
+                        class="chat-messages"
+                    >
 
                         Hi! I am your AI Placement Coach.
                         Ask me where to start!
 
-                    </p>
+                    </div>
 
 
                     <div class="chat-box">
+
 
                         <input
                             type="text"
@@ -298,17 +387,20 @@
 
                         </button>
 
+
                     </div>
+
 
                 </div>
 
 
-                <!-- ================= STATS ================= -->
+                <!-- STATS -->
 
                 <div class="stats-grid">
 
 
                     <div class="stat-card">
+
 
                         <span>
 
@@ -317,7 +409,9 @@
                         </span>
 
 
-                        <h3 id="readiness">
+                        <h3
+                            id="readiness"
+                        >
 
                             0%
 
@@ -330,10 +424,12 @@
 
                         </p>
 
+
                     </div>
 
 
                     <div class="stat-card">
+
 
                         <span>
 
@@ -342,7 +438,9 @@
                         </span>
 
 
-                        <h3 id="solved">
+                        <h3
+                            id="solved"
+                        >
 
                             0
 
@@ -355,10 +453,12 @@
 
                         </p>
 
+
                     </div>
 
 
                     <div class="stat-card">
+
 
                         <span>
 
@@ -367,37 +467,45 @@
                         </span>
 
 
-                        <h3 id="profileName">
+                        <h3
+                            id="profileName"
+                        >
 
                             -
 
                         </h3>
 
 
-                        <p id="role">
+                        <p
+                            id="role"
+                        >
 
                             -
 
                         </p>
 
+
                     </div>
+
 
                 </div>
 
 
-                <!-- ================= CONTINUE LEARNING ================= -->
+                <!-- CONTINUE -->
 
                 <div
                     id="continueCard"
-                    class="continue-card"
                 >
 
                 </div>
 
 
-                <!-- ================= SKILL ANALYSIS ================= -->
+                <!-- SKILL ANALYSIS -->
 
-                <div class="section-card">
+                <div
+                    class="section-card"
+                >
+
 
                     <h2>
 
@@ -406,16 +514,22 @@
                     </h2>
 
 
-                    <div id="skillAnalysis">
+                    <div
+                        id="skillAnalysis"
+                    >
 
                     </div>
+
 
                 </div>
 
 
-                <!-- ================= ROADMAP ================= -->
+                <!-- ROADMAP -->
 
-                <div class="section-card">
+                <div
+                    class="section-card"
+                >
+
 
                     <h2>
 
@@ -424,16 +538,20 @@
                     </h2>
 
 
-                    <div id="roadmap">
+                    <div
+                        id="roadmap"
+                    >
 
                     </div>
 
+
                 </div>
+
 
             </section>
 
 
-            <!-- ================= PRACTICE SECTION ================= -->
+            <!-- ================= PRACTICE ================= -->
 
             <section
                 id="practiceSection"
@@ -451,4 +569,88 @@
                 </button>
 
 
-                <div class="
+                <div
+                    class="practice-card"
+                >
+
+
+                    <div
+                        class="practice-header"
+                    >
+
+
+                        <h2
+                            id="practiceTitle"
+                        >
+
+                            Practice
+
+                        </h2>
+
+
+                        <span
+                            id="questionNumber"
+                        >
+
+                            Question 1 / 10
+
+                        </span>
+
+
+                    </div>
+
+
+                    <div
+                        class="progress-bar"
+                    >
+
+
+                        <div
+                            id="questionProgress"
+                        >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <h2
+                        id="questionText"
+                    >
+
+                    </h2>
+
+
+                    <div
+                        id="answerArea"
+                    >
+
+                    </div>
+
+
+                    <div
+                        id="feedback"
+                    >
+
+                    </div>
+
+
+                    <button
+                        id="nextButton"
+                        class="primary-btn hidden"
+                        onclick="nextQuestion()"
+                    >
+
+                        Next Question →
+
+                    </button>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================

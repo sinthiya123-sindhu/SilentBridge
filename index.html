@@ -2,27 +2,41 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SilentBridge - AI Sign Language Communication</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+    <title>
+        SilentBridge | AI Sign Language Communication
+    </title>
+
+    <link rel="stylesheet"
+        href="style.css">
+
 </head>
+
 
 <body>
 
-    <!-- NAVIGATION -->
+
+    <!-- ================= NAVBAR ================= -->
 
     <nav>
 
         <div class="logo">
+
             🤟 SilentBridge
+
         </div>
+
 
         <div class="nav-links">
 
-            <a href="#home">Home</a>
+            <a href="#home">
+                Home
+            </a>
 
             <a href="#how-it-works">
                 How It Works
@@ -34,6 +48,7 @@
 
         </div>
 
+
         <button class="nav-btn"
             onclick="startCommunication()">
 
@@ -44,35 +59,46 @@
     </nav>
 
 
-    <!-- HERO SECTION -->
+    <!-- ================= HERO ================= -->
 
-    <section id="home" class="hero">
+    <section id="home"
+        class="hero">
+
 
         <div class="hero-text">
 
+
             <span class="tag">
+
                 🤖 AI-POWERED COMMUNICATION
+
             </span>
+
 
             <h1>
 
                 Breaking Barriers.
 
                 <span>
+
                     Building Bridges.
+
                 </span>
 
             </h1>
 
+
             <p>
 
-                SilentBridge helps people communicate through
-                sign language, text, and voice using intelligent
-                AI technology.
+                SilentBridge helps people communicate
+                through sign language, text, and voice
+                using intelligent AI technology.
 
             </p>
 
+
             <div class="hero-buttons">
+
 
                 <button class="primary-btn"
                     onclick="startCommunication()">
@@ -81,6 +107,7 @@
 
                 </button>
 
+
                 <button class="secondary-btn"
                     onclick="scrollToSection('how-it-works')">
 
@@ -88,7 +115,9 @@
 
                 </button>
 
+
             </div>
+
 
         </div>
 
@@ -97,37 +126,52 @@
 
         <div class="hero-card">
 
+
             <div class="card-header">
 
                 <span>
+
                     ● LIVE AI TRANSLATION
+
                 </span>
 
+
                 <span class="status">
+
                     ● ONLINE
+
                 </span>
 
             </div>
 
 
-            <div class="camera-box">
+            <div class="hero-camera-box">
+
 
                 <video id="heroVideo"
                     autoplay
                     playsinline>
+
                 </video>
+
 
                 <div id="heroCameraMessage">
 
                     <div class="camera-icon">
+
                         📷
+
                     </div>
 
+
                     <p>
+
                         Camera Preview
+
                     </p>
 
                 </div>
+
 
                 <button onclick="startHeroCamera()">
 
@@ -135,14 +179,19 @@
 
                 </button>
 
+
             </div>
 
 
             <div class="translation-result">
 
+
                 <span>
+
                     AI DETECTED
+
                 </span>
+
 
                 <h2 id="detectedText">
 
@@ -150,34 +199,47 @@
 
                 </h2>
 
+
             </div>
 
+
         </div>
+
 
     </section>
 
 
-    <!-- HOW IT WORKS -->
+    <!-- ================= HOW IT WORKS ================= -->
 
     <section id="how-it-works"
         class="section">
 
+
         <div class="section-title">
 
+
             <span class="tag">
+
                 HOW IT WORKS
+
             </span>
 
+
             <h2>
+
                 One Bridge. Two Worlds.
+
             </h2>
+
 
             <p>
 
-                SilentBridge creates a two-way communication
-                bridge between sign language and spoken language.
+                SilentBridge creates a communication
+                bridge between sign language and
+                spoken language.
 
             </p>
+
 
         </div>
 
@@ -187,77 +249,109 @@
 
             <div class="step-card">
 
+
                 <div class="step-icon">
+
                     🤟
+
                 </div>
 
+
                 <h3>
+
                     Sign
+
                 </h3>
+
 
                 <p>
 
-                    A person communicates using sign language.
+                    A person communicates using
+                    hand gestures.
 
                 </p>
+
 
             </div>
 
 
             <div class="arrow">
+
                 →
+
             </div>
 
 
             <div class="step-card">
 
+
                 <div class="step-icon">
+
                     🤖
+
                 </div>
 
+
                 <h3>
+
                     AI Understands
+
                 </h3>
+
 
                 <p>
 
-                    AI analyzes and understands the communication.
+                    AI detects hand landmarks and
+                    analyzes the gesture.
 
                 </p>
+
 
             </div>
 
 
             <div class="arrow">
+
                 →
+
             </div>
 
 
             <div class="step-card">
 
+
                 <div class="step-icon">
+
                     💬
+
                 </div>
 
+
                 <h3>
+
                     Communicate
+
                 </h3>
+
 
                 <p>
 
-                    The message becomes text or voice.
+                    The detected message becomes
+                    text and voice.
 
                 </p>
+
 
             </div>
 
 
         </div>
 
+
     </section>
 
 
-    <!-- COMMUNICATION SECTION -->
+    <!-- ================= COMMUNICATION ================= -->
 
     <section id="communication"
         class="communication-section">
@@ -265,13 +359,28 @@
 
         <div class="section-title">
 
+
             <span class="tag">
+
                 AI COMMUNICATION AGENT
+
             </span>
 
+
             <h2>
+
                 Try the Communication Demo
+
             </h2>
+
+
+            <p>
+
+                Show your hand to the camera and
+                let the AI detect your gesture.
+
+            </p>
+
 
         </div>
 
@@ -279,7 +388,10 @@
         <div class="communication-box">
 
 
+            <!-- MODE BUTTONS -->
+
             <div class="mode-buttons">
+
 
                 <button class="active"
                     onclick="changeMode('sign', this)">
@@ -296,13 +408,14 @@
 
                 </button>
 
+
             </div>
 
 
             <div class="demo-area">
 
 
-                <!-- CAMERA -->
+                <!-- CAMERA AREA -->
 
                 <div class="camera-demo">
 
@@ -313,25 +426,40 @@
                         <video id="cameraVideo"
                             autoplay
                             playsinline>
+
                         </video>
+
+
+                        <canvas id="handCanvas">
+
+                        </canvas>
 
 
                         <div id="cameraMessage">
 
+
                             <span>
+
                                 📷
+
                             </span>
 
+
                             <p>
+
                                 Camera is ready
+
                             </p>
 
+
                         </div>
+
 
                     </div>
 
 
                     <div class="camera-buttons">
+
 
                         <button class="primary-btn"
                             onclick="startCamera()">
@@ -348,6 +476,7 @@
 
                         </button>
 
+
                     </div>
 
 
@@ -361,7 +490,7 @@
                 </div>
 
 
-                <!-- RESULT -->
+                <!-- RESULT AREA -->
 
                 <div class="result-area">
 
@@ -375,7 +504,7 @@
 
                     <h2 id="resultText">
 
-                        Show a sign to begin 🤟
+                        Show your hand to begin 🤟
 
                     </h2>
 
@@ -438,19 +567,24 @@
     </section>
 
 
-    <!-- FOOTER -->
+    <!-- ================= FOOTER ================= -->
 
     <footer>
 
+
         <h2>
+
             🤟 SilentBridge
+
         </h2>
+
 
         <p>
 
             Technology that connects every voice.
 
         </p>
+
 
         <p class="copyright">
 
@@ -459,11 +593,44 @@
 
         </p>
 
+
     </footer>
 
 
-    <script src="script.js"></script>
+    <!-- ================= MEDIAPIPE ================= -->
+
+    <script type="module">
+
+
+        import {
+
+            FilesetResolver,
+
+            HandLandmarker
+
+        }
+
+        from
+
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22";
+
+
+        window.FilesetResolver =
+            FilesetResolver;
+
+
+        window.HandLandmarker =
+            HandLandmarker;
+
+
+    </script>
+
+
+    <script src="script.js">
+
+    </script>
+
 
 </body>
 
-            </html>
+    </html>

@@ -18,11 +18,19 @@
 
         <div class="setup-card">
 
-            <h1>🤖 AI Placement Agent</h1>
+            <div class="robot">🤖</div>
 
-            <p>Let's create your preparation plan 🚀</p>
+            <h1>AI Placement Preparation Agent</h1>
+
+            <p>
+                Your personalized AI-powered placement preparation companion.
+            </p>
 
             <form id="setupForm">
+
+                <label for="userName">
+                    Your Name
+                </label>
 
                 <input
                     type="text"
@@ -31,37 +39,48 @@
                     required
                 >
 
+                <label for="targetRole">
+                    Target Role
+                </label>
+
                 <select id="targetRole" required>
 
                     <option value="">
-                        Select Target Role
-                    </option>
-
-                    <option value="Software Developer">
-                        Software Developer
+                        Select your target role
                     </option>
 
                     <option value="Python Developer">
                         Python Developer
                     </option>
 
-                    <option value="Web Developer">
-                        Web Developer
+                    <option value="Full Stack Developer">
+                        Full Stack Developer
                     </option>
 
                     <option value="Data Analyst">
                         Data Analyst
                     </option>
 
+                    <option value="Software Developer">
+                        Software Developer
+                    </option>
+
                 </select>
 
-                <h3>Select Your Skills</h3>
+                <label>
+                    Select Your Skills
+                </label>
 
                 <div class="skills">
 
                     <label>
                         <input type="checkbox" value="Python">
                         Python
+                    </label>
+
+                    <label>
+                        <input type="checkbox" value="C">
+                        C
                     </label>
 
                     <label>
@@ -86,8 +105,13 @@
 
                 </div>
 
-                <button type="submit" class="primary-btn">
-                    Start Preparation 🚀
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+
+                    Start My Preparation 🚀
+
                 </button>
 
             </form>
@@ -97,84 +121,24 @@
     </section>
 
 
-    <!-- APP -->
+    <!-- MAIN APP -->
 
-    <section id="app" class="hidden">
-
-        <header>
-
-            <h1>🤖 AI Placement Preparation Agent</h1>
-
-            <button onclick="resetUser()">
-                Reset
-            </button>
-
-        </header>
+    <section id="app" class="app hidden">
 
 
-        <!-- NAVIGATION -->
+        <!-- SIDEBAR -->
 
-        <nav>
+        <aside class="sidebar">
 
-            <button onclick="showDashboard()">
-                Dashboard
-            </button>
-
-            <button onclick="showProgress()">
-                Progress
-            </button>
-
-        </nav>
-
-
-        <!-- DASHBOARD -->
-
-        <main id="dashboardSection">
-
-            <h2 id="welcomeText"></h2>
-
-            <div class="profile-card">
-
-                <h3 id="profileName"></h3>
-
-                <p id="role"></p>
-
+            <div class="logo">
+                🤖 <span>Placement AI</span>
             </div>
 
+            <nav>
 
-            <div class="agent-card">
-
-                <h3>🤖 AI Coach</h3>
-
-                <p id="agentMessage"></p>
-
-            </div>
-
-
-            <div class="stats">
-
-                <div class="stat-card">
-
-                    <h3 id="solved">0</h3>
-
-                    <p>Questions Solved</p>
-
-                </div>
-
-                <div class="stat-card">
-
-                    <h3 id="readiness">0%</h3>
-
-                    <p>Readiness</p>
-
-                </div>
-
-            </div>
-
-
-            <h2>📚 Practice</h2>
-
-            <div class="practice-buttons">
+                <button onclick="showDashboard()">
+                    🏠 Dashboard
+                </button>
 
                 <button onclick="startPractice('aptitude')">
                     🧮 Aptitude
@@ -185,102 +149,310 @@
                 </button>
 
                 <button onclick="startPractice('coding')">
-                    🐍 Coding
+                    ⌨️ Coding
                 </button>
 
                 <button onclick="startPractice('interview')">
-                    🎤 Interview
+                    🎤 Mock Interview
                 </button>
 
-            </div>
+                <button onclick="showProgress()">
+                    📊 My Progress
+                </button>
+
+            </nav>
+
+            <button
+                class="logout-btn"
+                onclick="resetUser()"
+            >
+
+                🔄 Change User
+
+            </button>
+
+        </aside>
 
 
-            <h2>📊 Skill Analysis</h2>
+        <!-- MAIN CONTENT -->
 
-            <div id="skillAnalysis"></div>
-
-
-            <h2>🗺️ Roadmap</h2>
-
-            <div id="roadmap"></div>
+        <main class="main-content">
 
 
-            <div id="continueCard"></div>
+            <!-- DASHBOARD -->
+
+            <section
+                id="dashboardSection"
+                class="dashboard-section"
+            >
+
+                <div class="top-bar">
+
+                    <div>
+
+                        <p class="small-title">
+                            AI PLACEMENT PREPARATION
+                        </p>
+
+                        <h1 id="welcomeText">
+                            Welcome 👋
+                        </h1>
+
+                    </div>
+
+                </div>
 
 
-            <h2>🤖 AI Coach Chat</h2>
+                <!-- AI COACH -->
 
-            <div id="chatMessages"></div>
+                <div class="agent-card">
 
-            <div class="chat-box">
+                    <h2>
+                        Your AI Career Coach 🤖
+                    </h2>
 
-                <input
-                    type="text"
-                    id="chatInput"
-                    placeholder="Ask me something..."
+                    <p id="agentMessage">
+                        Your AI coach is ready to help you.
+                    </p>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🎯
+                        </div>
+
+                        <h3 id="readiness">
+                            0%
+                        </h3>
+
+                        <p>
+                            Readiness
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            📝
+                        </div>
+
+                        <h3 id="solved">
+                            0
+                        </h3>
+
+                        <p>
+                            Questions Solved
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            👤
+                        </div>
+
+                        <h3 id="profileName">
+                            User
+                        </h3>
+
+                        <p id="role">
+                            Student
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILLS -->
+
+                <div class="dashboard-card">
+
+                    <h2>
+                        🧠 Skill Analysis
+                    </h2>
+
+                    <div id="skillAnalysis"></div>
+
+                </div>
+
+
+                <!-- ROADMAP -->
+
+                <div class="dashboard-card">
+
+                    <h2>
+                        🗺️ AI Recommended Roadmap
+                    </h2>
+
+                    <div id="roadmap"></div>
+
+                </div>
+
+
+                <!-- CONTINUE -->
+
+                <div id="continueCard"></div>
+
+
+                <!-- CHAT -->
+
+                <div class="chat-card">
+
+                    <h2>
+                        💬 Talk with AI Coach
+                    </h2>
+
+                    <div
+                        id="chatMessages"
+                        class="chat-messages"
+                    >
+
+                        🤖 Hi! Ask me anything about your placement preparation.
+
+                    </div>
+
+                    <div class="chat-input-area">
+
+                        <input
+                            type="text"
+                            id="chatInput"
+                            placeholder="Ask me anything..."
+                        >
+
+                        <button onclick="sendMessage()">
+                            Send 🚀
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PRACTICE -->
+
+            <section
+                id="practiceSection"
+                class="practice-section hidden"
+            >
+
+                <div class="practice-header">
+
+                    <button
+                        onclick="showDashboard()"
+                        class="back-btn"
+                    >
+
+                        ← Dashboard
+
+                    </button>
+
+                    <h1 id="practiceTitle">
+                        PRACTICE
+                    </h1>
+
+                </div>
+
+
+                <div class="question-card">
+
+                    <div class="question-top">
+
+                        <span id="questionNumber">
+                            Question 1 / 10
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-container">
+
+                        <div
+                            id="questionProgress"
+                            class="question-progress"
+                        >
+
+                        </div>
+
+                    </div>
+
+
+                    <h2 id="questionText">
+                        Question will appear here
+                    </h2>
+
+
+                    <div
+                        id="answerArea"
+                        class="answer-area"
+                    >
+
+                    </div>
+
+
+                    <div id="feedback"></div>
+
+
+                    <button
+                        id="nextButton"
+                        class="primary-btn hidden"
+                        onclick="nextQuestion()"
+                    >
+
+                        Next Question →
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROGRESS -->
+
+            <section
+                id="progressSection"
+                class="progress-section hidden"
+            >
+
+                <div class="practice-header">
+
+                    <button
+                        onclick="showDashboard()"
+                        class="back-btn"
+                    >
+
+                        ← Dashboard
+
+                    </button>
+
+                    <h1>
+                        📊 My Progress
+                    </h1>
+
+                </div>
+
+                <div
+                    id="progressContent"
+                    class="progress-content"
                 >
 
-                <button onclick="sendMessage()">
-                    Send
-                </button>
+                </div>
 
-            </div>
-
-        </main>
-
-
-        <!-- PRACTICE -->
-
-        <main id="practiceSection" class="hidden">
-
-            <h2 id="practiceTitle"></h2>
-
-            <p id="questionNumber"></p>
-
-            <div class="progress-container">
-
-                <div id="questionProgress"></div>
-
-            </div>
-
-            <h2 id="questionText"></h2>
-
-            <div id="answerArea"></div>
-
-            <div id="feedback"></div>
-
-            <button
-                id="nextButton"
-                class="primary-btn hidden"
-                onclick="nextQuestion()"
-            >
-                Next Question →
-            </button>
-
-            <button
-                class="back-btn"
-                onclick="showDashboard()"
-            >
-                ← Dashboard
-            </button>
-
-        </main>
-
-
-        <!-- PROGRESS -->
-
-        <main id="progressSection" class="hidden">
-
-            <h2>📊 Your Progress</h2>
-
-            <div id="progressContent"></div>
-
-            <button
-                class="back-btn"
-                onclick="showDashboard()"
-            >
-                ← Dashboard
-            </button>
+            </section>
 
         </main>
 
@@ -291,4 +463,4 @@
 
 </body>
 
-    </html>
+                        </html>

@@ -1,7 +1,3 @@
-// ===============================
-// USER
-// ===============================
-
 let user = {
     name: "",
     role: "",
@@ -13,9 +9,7 @@ let currentQuestion = 0;
 let score = 0;
 
 
-// ===============================
 // QUESTIONS
-// ===============================
 
 const aptitudeQuestions = [
     {
@@ -188,17 +182,9 @@ const interviewQuestions = [
 ];
 
 
-// ===============================
 // STORAGE
-// ===============================
 
 function getUserKey() {
-
-    if (!user.name) {
-
-        return "placement_guest";
-
-    }
 
     return "placement_user_" +
         user.name
@@ -211,8 +197,7 @@ function getUserKey() {
 
 function getSavedData() {
 
-    let saved =
-        localStorage.getItem(getUserKey());
+    let saved = localStorage.getItem(getUserKey());
 
     if (saved) {
 
@@ -241,118 +226,65 @@ function saveData(data) {
 }
 
 
-// ===============================
 // SETUP
-// ===============================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document
+    .getElementById("setupForm")
+    .addEventListener("submit", function (event) {
 
-        const setupForm =
-            document.getElementById("setupForm");
+        event.preventDefault();
 
-        if (!setupForm) {
+        let name =
+            document
+                .getElementById("userName")
+                .value
+                .trim();
 
-            console.error(
-                "setupForm not found"
+        let role =
+            document
+                .getElementById("targetRole")
+                .value;
+
+        let skills =
+            [...document.querySelectorAll(".skills input:checked")]
+                .map(input => input.value);
+
+        user = {
+            name: name,
+            role: role,
+            skills: skills
+        };
+
+        let savedData = getSavedData();
+
+        if (
+            savedData.user &&
+            Object.keys(savedData.progress).length > 0
+        ) {
+
+            user = savedData.user;
+
+            openApp();
+
+            alert(
+                `Welcome back, ${user.name}! 👋\n\nYour progress has been saved.`
             );
 
-            return;
+        } else {
+
+            saveData({
+                user: user,
+                progress: {}
+            });
+
+            openApp();
 
         }
 
-        setupForm.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-                const name =
-                    document
-                        .getElementById("userName")
-                        .value
-                        .trim();
-
-                const role =
-                    document
-                        .getElementById("targetRole")
-                        .value;
-
-                const skills =
-                    Array.from(
-                        document.querySelectorAll(
-                            ".skills input:checked"
-                        )
-                    ).map(
-                        input => input.value
-                    );
+    });
 
 
-                if (name === "") {
-
-                    alert(
-                        "Please enter your name"
-                    );
-
-                    return;
-
-                }
-
-
-                user = {
-
-                    name: name,
-
-                    role: role,
-
-                    skills: skills
-
-                };
-
-
-                let savedData =
-                    getSavedData();
-
-
-                if (
-                    savedData.user &&
-                    savedData.user.name === user.name &&
-                    Object.keys(
-                        savedData.progress
-                    ).length > 0
-                ) {
-
-                    user =
-                        savedData.user;
-
-                } else {
-
-                    saveData({
-
-                        user: user,
-
-                        progress: {}
-
-                    });
-
-                }
-
-
-                openApp();
-
-            }
-
-        );
-
-    }
-
-);
-
-
-// ===============================
 // OPEN APP
-// ===============================
 
 function openApp() {
 
@@ -371,9 +303,7 @@ function openApp() {
 }
 
 
-// ===============================
 // DASHBOARD
-// ===============================
 
 function loadDashboard() {
 
@@ -395,7 +325,7 @@ function loadDashboard() {
     document
         .getElementById("agentMessage")
         .innerText =
-        `Hi ${user.name}! 🤖 I recommend starting with Aptitude Practice.`;
+        `Hi ${user.name}! 🤖 I recommend starting with Aptitude to build your foundation. You can also practice Technical, Coding, or Mock Interview questions.`;
 
     createSkillAnalysis();
 
@@ -408,16 +338,74 @@ function loadDashboard() {
 }
 
 
-// ===============================
+// CONTINUE
+
+function createContinueCard() {
+
+    let data = getSavedData();
+
+    let progress = data.progress;
+
+    let html = "";
+
+    for (let type in progress) {
+
+        let item = progress[type];
+
+        if (
+            item.question > 0 &&
+            item.question < 10
+        ) {
+
+            html += `
+
+                <div class="dashboard-card">
+
+                    <h2>
+                        🔄 Continue ${type.toUpperCase()}
+                    </h2>
+
+                    <p>
+                        Completed:
+                        ${item.question} / 10
+                    </p>
+
+                    <p>
+                        Score:
+                        ${item.score}
+                    </p>
+
+                    <button
+                        class="primary-btn"
+                        onclick="startPractice('${type}')"
+                    >
+
+                        Continue Practice →
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+    document
+        .getElementById("continueCard")
+        .innerHTML = html;
+
+}
+
+
 // START PRACTICE
-// ===============================
 
 function startPractice(type) {
 
     currentType = type;
 
-    let data =
-        getSavedData();
+    let data = getSavedData();
 
     if (data.progress[type]) {
 
@@ -434,7 +422,6 @@ function startPractice(type) {
         score = 0;
 
     }
-
 
     document
         .getElementById("dashboardSection")
@@ -461,43 +448,29 @@ function startPractice(type) {
 }
 
 
-// ===============================
 // LOAD QUESTION
-// ===============================
 
 function loadQuestion() {
 
     let questions;
 
-
     if (currentType === "aptitude") {
 
-        questions =
-            aptitudeQuestions;
+        questions = aptitudeQuestions;
+
+    } else if (currentType === "technical") {
+
+        questions = technicalQuestions;
+
+    } else if (currentType === "coding") {
+
+        questions = codingQuestions;
+
+    } else {
+
+        questions = interviewQuestions;
 
     }
-
-    else if (currentType === "technical") {
-
-        questions =
-            technicalQuestions;
-
-    }
-
-    else if (currentType === "coding") {
-
-        questions =
-            codingQuestions;
-
-    }
-
-    else {
-
-        questions =
-            interviewQuestions;
-
-    }
-
 
     if (currentQuestion >= 10) {
 
@@ -507,12 +480,10 @@ function loadQuestion() {
 
     }
 
-
     document
         .getElementById("questionNumber")
         .innerText =
         `Question ${currentQuestion + 1} / 10`;
-
 
     document
         .getElementById("questionProgress")
@@ -520,37 +491,29 @@ function loadQuestion() {
         .width =
         `${((currentQuestion + 1) / 10) * 100}%`;
 
-
     document
         .getElementById("feedback")
-        .innerHTML =
-        "";
-
+        .innerHTML = "";
 
     document
         .getElementById("nextButton")
         .classList
         .add("hidden");
 
-
     let question =
         questions[currentQuestion];
-
 
     if (
         currentType === "aptitude" ||
         currentType === "technical"
     ) {
 
-
         document
             .getElementById("questionText")
             .innerText =
             question.question;
 
-
         let html = "";
-
 
         question.options.forEach(
             function (option, index) {
@@ -571,23 +534,17 @@ function loadQuestion() {
             }
         );
 
-
         document
             .getElementById("answerArea")
             .innerHTML =
             html;
 
-    }
-
-
-    else {
-
+    } else {
 
         document
             .getElementById("questionText")
             .innerText =
             question;
-
 
         document
             .getElementById("answerArea")
@@ -614,9 +571,7 @@ function loadQuestion() {
 }
 
 
-// ===============================
-// MCQ ANSWER
-// ===============================
+// CHECK MCQ
 
 function checkAnswer(selected) {
 
@@ -625,69 +580,49 @@ function checkAnswer(selected) {
             ? aptitudeQuestions
             : technicalQuestions;
 
-
     let question =
         questions[currentQuestion];
 
-
     let options =
-        document.querySelectorAll(
-            ".option"
-        );
-
+        document.querySelectorAll(".option");
 
     options.forEach(
         button => {
-
             button.disabled = true;
-
         }
     );
 
-
-    if (
-        selected === question.answer
-    ) {
+    if (selected === question.answer) {
 
         score++;
-
 
         options[selected]
             .classList
             .add("correct");
 
-
         showFeedback(
-            "✅ Correct! Excellent work 🎉",
+            "✅ Correct! Excellent work.",
             true
         );
 
-    }
-
-
-    else {
-
+    } else {
 
         options[selected]
             .classList
             .add("wrong");
 
-
         options[question.answer]
             .classList
             .add("correct");
 
-
         showFeedback(
-            "❌ Incorrect. Keep practicing.",
+            "❌ Incorrect. Review this topic and keep practicing.",
             false
         );
 
     }
 
-
     saveProgress();
-
 
     document
         .getElementById("nextButton")
@@ -697,9 +632,7 @@ function checkAnswer(selected) {
 }
 
 
-// ===============================
 // TEXT ANSWER
-// ===============================
 
 function submitTextAnswer() {
 
@@ -708,7 +641,6 @@ function submitTextAnswer() {
             .getElementById("userAnswer")
             .value
             .trim();
-
 
     if (answer.length < 5) {
 
@@ -721,18 +653,14 @@ function submitTextAnswer() {
 
     }
 
-
     score++;
 
-
     showFeedback(
-        "✅ Good answer! 🎉",
+        "✅ Good answer! Keep improving.",
         true
     );
 
-
     saveProgress();
-
 
     document
         .getElementById("nextButton")
@@ -742,19 +670,13 @@ function submitTextAnswer() {
 }
 
 
-// ===============================
 // SAVE PROGRESS
-// ===============================
 
 function saveProgress() {
 
-    let data =
-        getSavedData();
+    let data = getSavedData();
 
-
-    data.user =
-        user;
-
+    data.user = user;
 
     data.progress[currentType] = {
 
@@ -764,34 +686,24 @@ function saveProgress() {
         score:
             score,
 
-        completed:
-            false
+        completed: false
 
     };
-
 
     saveData(data);
 
 }
 
 
-// ===============================
 // NEXT
-// ===============================
 
 function nextQuestion() {
 
     currentQuestion++;
 
+    if (currentQuestion >= 10) {
 
-    if (
-        currentQuestion >= 10
-    ) {
-
-
-        let data =
-            getSavedData();
-
+        let data = getSavedData();
 
         data.progress[currentType] = {
 
@@ -803,29 +715,22 @@ function nextQuestion() {
 
         };
 
-
         saveData(data);
 
-
         showCompleted();
-
 
         return;
 
     }
 
-
     saveProgress();
-
 
     loadQuestion();
 
 }
 
 
-// ===============================
 // COMPLETED
-// ===============================
 
 function showCompleted() {
 
@@ -833,7 +738,6 @@ function showCompleted() {
         .getElementById("questionText")
         .innerText =
         "🎉 Practice Completed!";
-
 
     document
         .getElementById("answerArea")
@@ -853,7 +757,6 @@ function showCompleted() {
 
         `;
 
-
     document
         .getElementById("nextButton")
         .classList
@@ -862,23 +765,16 @@ function showCompleted() {
 }
 
 
-// ===============================
 // FEEDBACK
-// ===============================
 
-function showFeedback(
-    message,
-    success
-) {
+function showFeedback(message, success) {
 
     document
         .getElementById("feedback")
         .innerHTML = `
 
             <div class="feedback ${
-                success
-                    ? "success"
-                    : "error"
+                success ? "success" : "error"
             }">
 
                 ${message}
@@ -890,9 +786,7 @@ function showFeedback(
 }
 
 
-// ===============================
 // DASHBOARD
-// ===============================
 
 function showDashboard() {
 
@@ -916,9 +810,7 @@ function showDashboard() {
 }
 
 
-// ===============================
 // PROGRESS
-// ===============================
 
 function showProgress() {
 
@@ -937,38 +829,33 @@ function showProgress() {
         .classList
         .remove("hidden");
 
-
     let data =
         getSavedData();
 
-
     let html = "";
 
-
-    [
+    let types = [
         "aptitude",
         "technical",
         "coding",
         "interview"
-    ].forEach(
-        function (type) {
+    ];
 
+    types.forEach(
+        function (type) {
 
             let item =
                 data.progress[type];
-
 
             let completed =
                 item
                     ? item.question
                     : 0;
 
-
             let currentScore =
                 item
                     ? item.score
                     : 0;
-
 
             html += `
 
@@ -995,7 +882,6 @@ function showProgress() {
         }
     );
 
-
     document
         .getElementById("progressContent")
         .innerHTML =
@@ -1004,18 +890,14 @@ function showProgress() {
 }
 
 
-// ===============================
 // STATS
-// ===============================
 
 function updateStats() {
 
     let data =
         getSavedData();
 
-
     let total = 0;
-
 
     Object
         .values(data.progress)
@@ -1028,18 +910,15 @@ function updateStats() {
             }
         );
 
-
     let readiness =
         Math.round(
             (total / 40) * 100
         );
 
-
     document
         .getElementById("solved")
         .innerText =
         total;
-
 
     document
         .getElementById("readiness")
@@ -1049,9 +928,7 @@ function updateStats() {
 }
 
 
-// ===============================
-// SKILLS
-// ===============================
+// SKILL ANALYSIS
 
 function createSkillAnalysis() {
 
@@ -1064,17 +941,13 @@ function createSkillAnalysis() {
                 "Communication"
             ];
 
-
     let html = "";
-
 
     skills.forEach(
         function (skill, index) {
 
-
             let percentage =
                 45 + index * 10;
-
 
             html += `
 
@@ -1091,7 +964,6 @@ function createSkillAnalysis() {
                         </b>
 
                     </div>
-
 
                     <div class="skill-bar">
 
@@ -1111,7 +983,6 @@ function createSkillAnalysis() {
         }
     );
 
-
     document
         .getElementById("skillAnalysis")
         .innerHTML =
@@ -1120,9 +991,7 @@ function createSkillAnalysis() {
 }
 
 
-// ===============================
 // ROADMAP
-// ===============================
 
 function createRoadmap() {
 
@@ -1140,13 +1009,10 @@ function createRoadmap() {
 
     ];
 
-
     let html = "";
-
 
     roadmap.forEach(
         function (item, index) {
-
 
             html += `
 
@@ -1158,13 +1024,11 @@ function createRoadmap() {
 
                     </div>
 
-
                     <div>
 
                         <b>
                             ${item}
                         </b>
-
 
                         <p>
                             AI recommended preparation step.
@@ -1179,7 +1043,6 @@ function createRoadmap() {
         }
     );
 
-
     document
         .getElementById("roadmap")
         .innerHTML =
@@ -1188,79 +1051,7 @@ function createRoadmap() {
 }
 
 
-// ===============================
-// CONTINUE CARD
-// ===============================
-
-function createContinueCard() {
-
-    let data =
-        getSavedData();
-
-
-    let html = "";
-
-
-    for (
-        let type in data.progress
-    ) {
-
-
-        let item =
-            data.progress[type];
-
-
-        if (
-            item.question > 0 &&
-            item.question < 10
-        ) {
-
-
-            html += `
-
-                <div class="dashboard-card">
-
-                    <h3>
-                        🔄 Continue
-                        ${type.toUpperCase()}
-                    </h3>
-
-
-                    <p>
-                        Progress:
-                        ${item.question} / 10
-                    </p>
-
-
-                    <button
-                        class="primary-btn"
-                        onclick="startPractice('${type}')"
-                    >
-
-                        Continue →
-
-                    </button>
-
-                </div>
-
-            `;
-
-        }
-
-    }
-
-
-    document
-        .getElementById("continueCard")
-        .innerHTML =
-        html;
-
-}
-
-
-// ===============================
 // CHAT
-// ===============================
 
 function sendMessage() {
 
@@ -1268,181 +1059,108 @@ function sendMessage() {
         document
             .getElementById("chatInput");
 
-
     let message =
         input.value.trim();
 
-
-    if (
-        message === ""
-    ) {
+    if (message === "") {
 
         return;
 
     }
 
-
     let text =
         message.toLowerCase();
 
-
-    let reply;
-
+    let reply = "";
 
     if (
-        text.includes("hi") ||
-        text.includes("hello") ||
-        text.includes("hey")
-    ) {
-
-
-        reply =
-            `Hi ${user.name}! 👋 How can I help you with your placement preparation? 🤖`;
-
-    }
-
-
-    else if (
         text.includes("start") ||
-        text.includes("begin")
+        text.includes("begin") ||
+        text.includes("where")
     ) {
 
-
         reply =
-            "You can start with Aptitude Practice. It builds your problem-solving foundation 🚀";
+            `Hi ${user.name}! 👋 I recommend starting with Aptitude Practice. It will improve your problem-solving foundation. 🚀`;
 
-    }
-
-
-    else if (
+    } else if (
         text.includes("progress") ||
         text.includes("continue")
     ) {
 
-
         reply =
             "Your progress is saved automatically 💾 You can continue from where you stopped.";
 
-    }
-
-
-    else if (
-        text.includes("aptitude")
-    ) {
-
-
-        reply =
-            "Aptitude improves logical thinking and problem-solving skills 🧮";
-
-    }
-
-
-    else if (
-        text.includes("technical")
-    ) {
-
-
-        reply =
-            "Technical practice covers Python, SQL, HTML, CSS and programming concepts 💻";
-
-    }
-
-
-    else if (
+    } else if (
         text.includes("interview")
     ) {
 
+        reply =
+            "For interview preparation 🎤, answer in complete sentences and include your education, skills, projects, strengths and career goals.";
+
+    } else if (
+        text.includes("aptitude")
+    ) {
 
         reply =
-            "For interviews, practice your introduction, strengths, weaknesses, projects and career goals 🎤";
+            "Aptitude practice improves your logical thinking and problem-solving skills 🧮.";
 
-    }
-
-
-    else {
-
+    } else if (
+        text.includes("technical")
+    ) {
 
         reply =
-            "I can help you with Aptitude, Technical, Coding, Interview and Progress 📊";
+            "Technical preparation covers Python, SQL, HTML, CSS and programming concepts 💻.";
+
+    } else {
+
+        reply =
+            "I can help you with Aptitude, Technical Questions, Coding, Mock Interview and Progress 📊.";
 
     }
-
 
     document
         .getElementById("chatMessages")
         .innerHTML = `
 
-            <p>
-                <b>You:</b>
-                ${message}
-            </p>
+            <b>You:</b>
+            ${message}
 
-            <p>
-                <b>🤖 AI Coach:</b>
-                ${reply}
-            </p>
+            <br><br>
+
+            <b>🤖 AI Coach:</b>
+            ${reply}
 
         `;
-
 
     input.value = "";
 
 }
 
 
-// ===============================
-// RESET
-// ===============================
+// RESET USER
 
 function resetUser() {
 
-    localStorage.clear();
+    localStorage.removeItem(getUserKey());
 
     location.reload();
 
 }
 
 
-// ===============================
 // ENTER KEY
-// ===============================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document
+    .getElementById("chatInput")
+    .addEventListener(
+        "keydown",
+        function (event) {
 
+            if (event.key === "Enter") {
 
-        const chatInput =
-            document.getElementById(
-                "chatInput"
-            );
+                sendMessage();
 
-
-        if (
-            chatInput
-        ) {
-
-
-            chatInput.addEventListener(
-                "keydown",
-                function (event) {
-
-
-                    if (
-                        event.key === "Enter"
-                    ) {
-
-
-                        sendMessage();
-
-                    }
-
-                }
-
-            );
+            }
 
         }
-
-    }
-
-);
+    );
